@@ -1,0 +1,479 @@
+#UI
+ui <- bootstrapPage(
+  navbarPage(
+    theme = bslib::bs_theme(bootswatch = "flatly"),
+    collapsible = TRUE,
+    HTML(
+      '<a style="text-decoration:none;cursor:default;color:#FFFFFF;" class="active" href="#">BeeFall</a>'
+    ),
+    id = "nav",
+    windowTitle = "BeeFall",
+    
+    tabPanel(
+      "Shortfalls in Wild Bee Data in Europe",
+      div(
+        class = "outer",
+        tags$head(
+          includeCSS("F:/Other_Projects/EU_Photos/BeeFall/www/styles.css")
+        ),
+        leafletOutput("map", width = "100%", height =
+                        "100%"),
+        
+        absolutePanel(
+          id = "controls",
+          class = "panel panel-default",
+          top = 75,
+          left = 55,
+          width = 250,
+          fixed = TRUE,
+          draggable = FALSE,
+          height = "auto",
+          
+          img(src = "F:/Other_Projects/EU_Photos/BeeFall/www/Megachileversicolor.jpg", height = 140),
+          
+          helpText("Visualize data shortfalls for European wild bee species"),
+          
+          radioButtons(
+            "resolution",
+            h3("Map Resolution"),
+            choices = list("Country", "Province"),
+            selected = "Province"
+          ),
+          
+          selectInput(
+            "shortfall",
+            h3("Shortfall"),
+            choices = sfs,
+            selected = "Distribution"
+          ),
+          conditionalPanel(
+            condition = "input.mapopts == 'Bivariate'",
+            selectInput(
+              "shortfall2",
+              h3("2nd Shortfall"),
+              choices = sfs,
+              selected = "Distribution"
+            )
+          ),
+          radioButtons(
+            "mapopts",
+            h3("Map Options"),
+            choices = list("Single Variable", "Bivariate"),
+            selected = "Single Variable"
+          ),
+          
+        ),
+        #fix here so table only shows when map clicked
+        conditionalPanel(
+          condition = "input.mapopts == 'Single Variable' && input.shortfall != 'Distribution'",
+          absolutePanel(
+            id = "controls",
+            class = "panel panel-default",
+            top = 75,
+            right = 55,
+            width = 500,
+            fixed = TRUE,
+            draggable = TRUE,
+            height = "auto",
+            
+            box(
+              width = 12,
+              collapsible = T,
+              title = NULL,
+              solidHeader = T,
+              status = 'primary',
+              dataTableOutput('table')
+            ),
+            #show selected data in table form
+            conditionalPanel(
+              condition = "input.shortfall == 'Traits'",
+              helpText(
+                "NB: Trait Codes: I = ITD Females, V = Voltinism, S = Sociality, N = Nesting, L = Lecty, B= Buzz polliantion & P = Pollen transport. See Trait Details tab for more information"
+              ),
+              
+            ),
+          )
+        )
+      ),
+      
+      
+    ),
+    
+    tabPanel("About"),
+    
+    tabPanel(
+      "Contact",
+      pageWithSidebar(
+        headerPanel("Contact"),
+        
+        sidebarPanel(
+          textInput("from", "From:", value = "from@gmail.com"),
+          selectInput(
+            "subject",
+            "Subject:",
+            choices = c("Error", "Data", "Other"),
+            selected = "Error"
+          ),
+          actionButton("send", "Send mail")
+        ),
+        
+        mainPanel(aceEditor("message", value = "write message here"))
+        
+      )
+    )
+  )
+)
+
+#server######
+server <- function(input, output, session) {
+  toListen <- reactive({
+    list(input$shortfall, input$resolution)
+  })
+  
+  observeEvent(toListen(), {
+    if (input$resolution == "Province") {
+      updateSelectInput(
+        session,
+        input = "shortfall2",
+        choices = sfs[!sfs %in% list(input$shortfall, "Checklist")],
+        selected = input$shortfall2
+      )
+      updateSelectInput(
+        session,
+        input = "shortfall",
+        choices = sfs[sfs != "Checklist"],
+        selected = if (input$shortfall == "Checklist") {
+          "Distribution"
+        } else{
+          input$shortfall
+        }
+        
+      )
+    }
+    if (input$resolution == "Country") {
+      updateSelectInput(
+        session,
+        input = "shortfall2",
+        choices = sfs[!sfs %in% input$shortfall],
+        selected = input$shortfall2
+      )
+      updateSelectInput(
+        session,
+        input = "shortfall",
+        choices = sfs,
+        selected = input$shortfall
+      )
+      
+    }
+  })
+  
+  observe({
+    if (input$mapopts == "Single Variable") {
+      output$map <- renderLeaflet({
+        if (input$resolution == "Province") {
+          data <- switch(
+            input$shortfall,
+            "Distribution" = nd.shp.prov,
+            "Photos" = np.shp.prov,
+            "Traits" = nt.shp.prov,
+            "Genes" = ng.shp.prov,
+            "Interactions" = nb.shp.prov,
+            "Population" = npp.shp.prov
+          )
+          data2 <- switch(
+            input$shortfall2,
+            "Distribution" = nd.shp.prov,
+            "Photos" = np.shp.prov,
+            "Traits" = nt.shp.prov,
+            "Genes" = ng.shp.prov,
+            "Interactions" = nb.shp.prov,
+            "Population" = npp.shp.prov
+          )
+        } else{
+          data <- switch(
+            input$shortfall,
+            "Distribution" = nd.shp.c,
+            "Checklist" = nc.shp.c,
+            "Photos" = np.shp.c,
+            "Traits" = nt.shp.c,
+            "Genes" = ng.shp.c,
+            "Interactions" = nb.shp.c,
+            "Population" = npp.shp.c
+          )
+          data2 <- switch(
+            input$shortfall2,
+            "Distribution" = nd.shp.c,
+            "Checklist" = nc.shp.c,
+            "Photos" = np.shp.c,
+            "Traits" = nt.shp.c,
+            "Genes" = ng.shp.c,
+            "Interactions" = nb.shp.c,
+            "Population" = npp.shp.c
+          )
+        }
+        
+        if (input$shortfall == "Checklist" &
+            input$resolution == "Province") {
+          NULL
+        } else{
+          plotmapfunc(data, type = req(input$shortfall))
+        }
+        
+      })
+    }
+  })# end of leaflet::renderLeaflet({})
+  
+  observe({
+    if (input$mapopts == "Bivariate") {
+      if (input$resolution == "Province") {
+        data <- switch(
+          input$shortfall,
+          "Distribution" = nd.shp.prov,
+          "Photos" = np.shp.prov,
+          "Traits" = nt.shp.prov,
+          "Genes" = ng.shp.prov,
+          "Interactions" = nb.shp.prov,
+          "Population" = npp.shp.prov
+        )
+        data2 <- switch(
+          input$shortfall2,
+          "Distribution" = nd.shp.prov,
+          "Photos" = np.shp.prov,
+          "Traits" = nt.shp.prov,
+          "Genes" = ng.shp.prov,
+          "Interactions" = nb.shp.prov,
+          "Population" = npp.shp.prov
+        )
+      } else{
+        data <- switch(
+          input$shortfall,
+          "Distribution" = nd.shp.c,
+          "Checklist" = nc.shp.c,
+          "Photos" = np.shp.c,
+          "Traits" = nt.shp.c,
+          "Genes" = ng.shp.c,
+          "Interactions" = nb.shp.c,
+          "Population" = npp.shp.c
+        )
+        data2 <- switch(
+          input$shortfall2,
+          "Distribution" = nd.shp.c,
+          "Checklist" = nc.shp.c,
+          "Photos" = np.shp.c,
+          "Traits" = nt.shp.c,
+          "Genes" = ng.shp.c,
+          "Interactions" = nb.shp.c,
+          "Population" = npp.shp.c
+        )
+      }
+      
+      if ((input$shortfall == "Checklist" |
+           input$shortfall2 == "Checklist") &
+          input$resolution == "Province") {
+        NULL
+      } else{
+        output$map <- renderLeaflet({
+          shp1 <- data
+          shp2 <- data2
+          shp <- inner_join(shp1, st_drop_geometry(shp2), by = "ID")
+          #need to change label text in original function
+          plotmapfunc.bivar(
+            layer = shp,
+            var1_name = sr.x,
+            var2_name = sr.y,
+            var1_label = input$shortfall,
+            var2_label = input$shortfall2,
+            region_names = "name.x",
+            ntiles = 4
+          )
+        })
+      }
+    }
+  })
+  
+  
+  
+  click_polygon <- reactiveVal()
+  
+  rowCallback <- c(
+    "function(row, data, index){",
+    "  $(this.api().cell(index, 1).node())",
+    "    .css('text-align', 'left')",
+    "    .css('font-style', 'italic');",
+    "}"
+  )
+  
+  toListen2 <- reactive({
+    list(input$map_shape_click, input$mapopts)
+  })
+  
+  observeEvent(toListen2(), {
+    #don't make table if Bivariate
+    if (input$mapopts == "Bivariate") {
+      click_polygon(NULL)
+    } else{
+      # Capture the info of the clicked polygon
+      if (!is.null(click_polygon()) &&
+          click_polygon() == input$map_shape_click$id)
+        click_polygon(NULL)     # Reset filter
+      else
+        click_polygon(input$map_shape_click$id)
+    }
+  })
+  
+  
+  # Parcels data table
+  output$table <- DT::renderDataTable({
+    tab.bee <- switch(input$resolution,
+                      "Country" = bee.table.c,
+                      "Province" = bee.table)
+    
+    
+    DT::datatable(
+      tableee <- if (is.null(click_polygon()))
+        NULL    # Not filtered
+      else
+        #parcels_df %>% filter(polygon==click_polygon())
+        if (input$shortfall == "Photos" &
+            input$mapopts == "Single Variable") {
+          tab.bee %>% ungroup() %>% filter(Photo == 0 &
+                                             ID == input$map_shape_click$id) %>%
+            dplyr::select(Corrected, "RL_EU_2015") %>% distinct() %>%
+            rename(`Species Name` = 1, `Red List Status` = 2)
+          
+        } else if (input$shortfall == "Traits" &
+                   input$mapopts == "Single Variable") {
+          #first make subset per click of all meaningful traits
+          test1 <-
+            tab.bee %>% ungroup() %>% filter_at(vars(all_of(traitnames)), any_vars(is.na(.))) %>%
+            filter(ID == input$map_shape_click$id) %>%
+            dplyr::select(
+              Corrected,
+              RL_EU_2015,
+              Voltinism,
+              ITD.Mean_f,
+              Sociality,
+              Nesting,
+              Lecty,
+              Buzz.pollinator,
+              Pollen.transport
+            ) %>% distinct() %>%
+            rename_at(vars(all_of(traitnames)), ~ all_of(traitcodes))
+          
+          #create table where we addnewcolumn showing which traits are missing
+          cbind(test1, MT = apply(test1 %>% dplyr::select(all_of(traitcodes)), 1,
+                                  function(u)
+                                    paste(names(u)[sapply(u, anyNA)], collapse = ","))) %>% dplyr::select(Corrected, RL_EU_2015, MT) %>% distinct() %>%
+            rename(
+              `Species Name` = 1,
+              `Red List Status` = 2,
+              `Missing Traits` = 3
+            )
+        } else if (input$shortfall == "Genes" &
+                   input$mapopts == "Single Variable") {
+          tab.bee %>% ungroup() %>% filter(Gene == 0 &
+                                             ID == input$map_shape_click$id) %>%
+            dplyr::select(Corrected, "RL_EU_2015") %>% distinct() %>%
+            rename(`Species Name` = 1, `Red List Status` = 2)
+        } else if (input$shortfall == "Population" &
+                   input$mapopts == "Single Variable") {
+          tab.bee %>% ungroup() %>% filter(RL_EU_2015 == "DD" &
+                                             ID == input$map_shape_click$id) %>%
+            dplyr::select(Corrected,
+                          "RL_EU_2015" &
+                            input$mapopts == "Single Variable") %>% distinct() %>%
+            rename(`Species Name` = 1, `Red List Status` = 2)
+        } else if (input$shortfall == "Interactions" &
+                   input$mapopts == "Single Variable") {
+          tab.bee %>% ungroup() %>% filter(is.na(Floral.preference) &
+                                             ID == input$map_shape_click$id) %>%
+            dplyr::select(Corrected,
+                          "RL_EU_2015" &
+                            input$mapopts == "Single Variable") %>% distinct() %>%
+            rename(`Species Name` = 1, `Red List Status` = 2)
+        } else if (input$shortfall == "Checklist" &
+                   input$mapopts == "Single Variable") {
+          species.counts %>% filter(!!rlang::sym(input$map_shape_click$id) > 0) %>%
+            dplyr::select(Corrected,!!rlang::sym(input$map_shape_click$id)) %>%
+            rename(`Species Name` = 1,
+                   `Distribution Data` = 2)  %>%
+            mutate(`Distribution Data` = recode(`Distribution Data`, "2" = "Yes", "1" = "No"))
+        },
+      
+      extensions = "Buttons",
+      options = list(
+        lengthChange = FALSE,
+        initComplete = JS(
+          "function(settings, json) {",
+          "$(this.api().table().header()).css({'background-color': '#42f', 'color': '#fff'});",
+          "}"
+        ),
+        dom = "Bfrtip",
+        #   #buttons = c("copy", "csv", "excel", "pdf", "print"),
+        #   buttons = list(
+        #     list(extend = 'copy'),
+        #     list(
+        #       extend = 'csv',
+        #       filename =  paste(
+        #         Sys.time(),
+        #         input$shortfall,
+        #         input$map_shape_click$id,
+        #         if (input$resolution == "Province") {
+        #           na.omit(codes[codes$ID == input$map_shape_click$id, 2])
+        #         } else{
+        #           na.omit(unique(codes.c)[unique(codes.c)$FID == input$map_shape_click$id, 2])
+        #         },
+        #         sep = "_"
+        #       )
+        #     ),
+        #     list(
+        #       extend = 'excel',
+        #       filename =  paste(
+        #         Sys.time(),
+        #         input$shortfall,
+        #         input$map_shape_click$id,
+        #         if (input$resolution == "Province") {
+        #           na.omit(codes[codes$ID == input$map_shape_click$id, 2])
+        #         } else{
+        #           na.omit(unique(codes.c)[unique(codes.c)$FID == input$map_shape_click$id, 2])
+        #         },
+        #         sep = "_"
+        #       )
+        #     ),
+        #     list(
+        #       extend = 'pdf',
+        #       filename =  paste(
+        #         Sys.time(),
+        #         input$shortfall,
+        #         input$map_shape_click$id,
+        #         if (input$resolution == "Province") {
+        #           na.omit(codes[codes$ID == input$map_shape_click$id, 2])
+        #         } else{
+        #           na.omit(unique(codes.c)[unique(codes.c)$FID == input$map_shape_click$id, 2])
+        #         },
+        #         sep = "_"
+        #       )
+        #     ),
+        #     list(extend = 'print')
+        #   ),
+        autowidth = TRUE,
+        columnDefs = list(list(
+          width = '70%', targets = 1
+        )),
+        rowCallback = JS(rowCallback)
+      ),
+      escape = FALSE,
+    )
+  }, server = FALSE)
+  
+  observe({
+    if (is.null(input$send) || input$send == 0)
+      return(NULL)
+    from <- isolate(input$from)
+    to <- "leon.marshall@ulb.be"
+    subject <- isolate(input$subject)
+    msg <- isolate(input$message)
+    sendmail(from, to, subject, msg)
+  })
+  
+}
