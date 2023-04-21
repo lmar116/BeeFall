@@ -1,4 +1,34 @@
-plotmapfunc <- function(layer, type = "Other") {
+tempcol <- colorRampPalette(
+  c(
+    "blue",
+          "turquoise3",
+          "chartreuse4",
+          "yellowgreen",
+          "gold2",
+          "orange",
+          "firebrick2",
+          "tomato4"
+  )
+)
+
+monocol <- colorRampPalette(
+  c(
+    "#FAF7F5",
+             "#FBEEE6",
+             "#F6DDCC",
+             "#EDBB99",
+             "#E59866",
+             "#DC7633",
+             "#D35400",
+             "#BA4A00",
+             "#A04000",
+             "#873600",
+             "#6E2C00",
+             "#381701"
+  )
+)
+
+plotmapfunc <- function(layer, type = "Other", colour = tempcol, legend= "On") {
   # #value as to whether == distribution map
   # grepval <- as.integer(grepl("dist", deparse(substitute(layer))))
   
@@ -9,6 +39,7 @@ plotmapfunc <- function(layer, type = "Other") {
         layer$name,
         round(layer$sr, 0)
       ) %>% lapply(htmltools::HTML)
+    title= "Comparative Rank of Undersampling (%)"
   }
   
   if (type == "Checklist") {
@@ -18,28 +49,38 @@ plotmapfunc <- function(layer, type = "Other") {
         layer$name,
         round(layer$sr, 0)
       ) %>% lapply(htmltools::HTML)
+    title="Percentage of checklist missing distribution data"
   }
   
-  if (type != "Distribution" & type != "Checklist") {
+  if (type == "Description") {
+    labels <-
+      sprintf(
+        "<strong>%s</strong><br/>%s%% rate of new species descriptions since 1990",
+        layer$name,
+        round(layer$sr, 2)
+      ) %>% lapply(htmltools::HTML)
+    title="Rate of new species descriptions since 1990 (%)"
+  }
+  
+  if (type != "Distribution" & type != "Checklist"& type != "Description") {
     labels <-
       sprintf("<strong>%s</strong><br/>%s species missing data",
               layer$name,
               layer$sr) %>% lapply(htmltools::HTML)
+    title="Number of species"
   }
   
   
   
-  factpal <- colorNumeric(tempcol(length(layer$sr)), layer$sr)
+  factpal <- colorNumeric(colour(length(layer$sr)), layer$sr)
   
   
   leaflet(options = leafletOptions(zoomControl = T,
                                    minZoom = 4)) %>%
     setView(11.5 , 55, 3.5) %>%
-    #addProviderTiles(providers$Stamen.Toner) %>%
-    #addProviderTiles("Esri.WorldImagery") %>%
+
     addProviderTiles("Esri.WorldTopoMap",
                      group = "Topo") %>%
-    #addProviderTiles("CartoDB.Positron",     group = "CartoDB") %>%
     addPolygons(
       data = layer,
       color = "grey",
@@ -60,29 +101,29 @@ plotmapfunc <- function(layer, type = "Other") {
         direction = "auto"
       )
     ) %>%
+    #if(legend=="On"){
     addLegend(
       pal = factpal,
       values = layer$sr,
       opacity = 0.7,
-      title = NULL,
+      title = title,
       position = "bottomright"
     )
+      #}
 }
 
-
-plotmapfunc.bivar <- function(layer,
-                              var1_name,
-                              var2_name,
+plotmapfunc.bivar <- function(layer, 
+                              var1_name, 
+                              var2_name, 
                               ntiles = 4,
-                              var1_label = NA,
+                              var1_label = NA, 
                               var2_label = NA,
                               label_arrows = TRUE,
                               region_names = NA,
-                              paletteFunction = pals::arc.bluepink) {
-  if (is.na(var1_label))
-    var1_label <- rlang::enexpr(var1_name)
-  if (is.na(var2_label))
-    var2_label <- rlang::enexpr(var2_name)
+                              paletteFunction = pals::arc.bluepink){
+  
+  if (is.na(var1_label)) var1_label <- rlang::enexpr(var1_name)
+  if(is.na(var2_label))  var2_label <- rlang::enexpr(var2_name)
   
   
   # separate labels for the palette and the map, if so desired
@@ -90,118 +131,80 @@ plotmapfunc.bivar <- function(layer,
   var2_pal_label <- var2_label
   
   # are we putting fun arrows on the labels?
-  if (label_arrows) {
-    var1_pal_label <- paste0(var1_label, " \U2192")
-    var2_pal_label <- paste0(var2_label, " \U2192")
+  if (label_arrows){
+    var1_pal_label <- paste0(var1_label," Gaps", " \U2192")
+    var2_pal_label <- paste0(var2_label," Gaps", " \U2192")
   }
   
-  # the pals package has many palettes for bivariate choropleths.
-  # NOTE!! That all of them are 2x2 or 3x3. larger matrices will probably be
-  # harder to interpret, and it looks like people don't use them
-  bivar_pal <- function(x)
-    paletteFunction(n = ntiles ^ 2)[x]
+  bivar_pal <- function(x) paletteFunction(n=ntiles^2)[x]
   
   forplot <- layer %>%
-    dplyr::rename (var1 = {
-      {
-        var1_name
-      }
-    },
-    var2 = {
-      {
-        var2_name
-      }
-    }) %>%
-    dplyr::mutate(
-      var1_ntile = dplyr::ntile(var1, n = ntiles),
-      var2_ntile = dplyr::ntile(var2, n = ntiles),
-      pal_num = var1_ntile + (var2_ntile - 1) * ntiles,
-      #(ntiles -var1_ntile)*3 + var2_ntile,
-      pal_colour = bivar_pal(pal_num)
-    )
+    dplyr::rename (var1 = {{var1_name}},
+                   var2 = {{var2_name}}) %>%
+    dplyr::mutate(var1_ntile = dplyr::ntile(var1, n = ntiles),
+                  var2_ntile = dplyr::ntile(var2, n = ntiles),
+                  pal_num = var1_ntile + (var2_ntile - 1)*ntiles,#(ntiles -var1_ntile)*3 + var2_ntile,
+                  pal_colour = bivar_pal(pal_num))
   
   #
-  if (!is.na(region_names))
-    forplot <- dplyr::rename(forplot,
-                             region_name_label = region_names)
+  if (!is.na(region_names)) forplot <- dplyr::rename(forplot,
+                                                     region_name_label = region_names)
   
   # set up some css for the html palette swatch
   palette_size_px <- 120
   swatch_size_px <- round(palette_size_px / ntiles)
   
-  row_col_px <-
-    rep(paste0(swatch_size_px, "px"), times = ntiles) %>%
+  row_col_px <- rep(paste0(swatch_size_px,"px"), times = ntiles) %>%
     stringr::str_flatten(collapse = " ") %>%
     paste0(., ";")
   
   
-  div_var1 <-
-    paste0(
-      '<div class = "var1-label" style="grid-row-start:1; grid-row-end:',
-      (ntiles + 1),
-      '; text-align: center; writing-mode: tb-rl;
-        transform: rotate(-180deg);">',
-      var1_pal_label,
-      '</div>'
-    )
-  div_var2 <-
-    paste0(
-      '<div style="text-align:center; grid-column:2 / ',
-      (ntiles + 2),
-      ';">',
-      var2_pal_label,
-      '</div>'
-    )
+  div_var1 <- paste0('<div class = "var1-label" style="grid-row-start:1; grid-row-end:',(ntiles+1),'; text-align: center; writing-mode: tb-rl;
+        transform: rotate(-180deg);">',var1_pal_label,'</div>')
+  div_var2 <- paste0('<div style="text-align:center; grid-column:2 / ',(ntiles+2),';">',var2_pal_label,'</div>')
   
   # set up the indices for the palette
-  div_indices <- matrix((1:ntiles ^ 2),
-                        nrow = ntiles,
+  div_indices <- matrix((1:ntiles^2),
+                        nrow=ntiles,
                         ncol = ntiles,
                         byrow = TRUE)
   
-  div_indices <- div_indices[, c(ntiles:1)]
+  div_indices <- div_indices[,c(ntiles:1)]
   
   # set up the divs for the palette squares
-  divs <-
-    paste0(
-      '<div style="background-color:',
-      bivar_pal(div_indices),
-      '; color:',
-      bivar_pal(div_indices),
-      ';">',
-      div_indices,
-      ' </div>'
-    ) %>%
+  divs <- paste0('<div style="background-color:',bivar_pal(div_indices),
+                 '; color:',bivar_pal(div_indices),
+                 ';">',div_indices,' </div>') %>%
     stringr::str_flatten()
   
   # combine the above bits with a css grid wrapper for the html palette
   palette_html <- paste0(
     '<style> .grid-container { display: grid;
-    grid-template-columns: 40px ',
-    row_col_px,
-    'grid-auto-rows: ',
-    row_col_px,
-    ' 40px;',
-    '}
+    grid-template-columns: 40px ',row_col_px,
+    'grid-auto-rows: ',row_col_px,' 40px;','}
     </style>
     <div class="grid-container">',
     div_var1,
     divs,
     div_var2,
-    '</div>'
-  )
+    '</div>')
   
-  vl1 <- paste(var1_label, "Gap")
-  vl2 <- paste(var2_label, "Gap")
+  #get full name
+  st1 <- sfstable %>% filter(Name==var1_label)
+  Shortfall1 <- st1$Shortfall
+  st2 <- sfstable %>% filter(Name==var2_label)
+  Shortfall2 <- st2$Shortfall
+  
+  vl1 <- paste(Shortfall1, "Shortfall")
+  vl2 <- paste(Shortfall2, "Shortfall")
   
   if (var1_label == "Distribution") {
     labfillvl1 <- sprintf("%s%% comparatively undersampled",
                           round(forplot$var1, 0))
   }
   if (var2_label == "Distribution") {
-    labels <-
-      labfillvl2 <- sprintf("%s%% comparatively undersampled",
-                            round(forplot$var2, 0))
+    labfillvl2 <- sprintf("%s%% comparatively undersampled",
+                          round(forplot$var2, 0))
   }
   
   if (var1_label == "Checklist") {
@@ -213,70 +216,65 @@ plotmapfunc.bivar <- function(layer,
                           round(forplot$var2, 0))
   }
   
-  if (var1_label != "Distribution" & var1_label != "Checklist") {
+  if (var1_label == "Description") {
+    labfillvl1 <- sprintf("%s%% rate of new species descriptions since 1990",
+                          round(forplot$var1, 2))
+  }
+  if (var2_label == "Description") {
+    labfillvl2 <- sprintf("%s%% rate of new species descriptions since 1990",
+                          round(forplot$var2, 2))
+  }
+  if (var1_label != "Distribution" & var1_label != "Checklist"& var1_label != "Description") {
     labfillvl1 <- sprintf("%s species missing data",
                           forplot$var1)
   }
   
-  if (var2_label != "Distribution" & var2_label != "Checklist") {
+  if (var2_label != "Distribution" & var2_label != "Checklist"& var2_label != "Description") {
     labfillvl2 <- sprintf("%s species missing data",
                           forplot$var2)
   }
   
-  ############fix this
-  labs <- paste0(
-    "<b>",
-    vl1,
-    "</b> ",
-    "<br>#Tile: ",
-    forplot$var1_ntile,
-    "<br>",
-    labfillvl1  %>% lapply(htmltools::HTML),
-    "<br><b>",
-    vl2,
-    "</b> ",
-    "<br>#Tile: ",
-    forplot$var2_ntile,
-    "</b> ",
-    "<br>",
-    labfillvl2  %>% lapply(htmltools::HTML)
-  )
   
- if (!is.na(region_names))
-    labs <-
-    paste0("<b>", forplot$region_name_label, "</b><br>", labs)
+  ############fix this
+  labs <- paste0("<b>",vl1,"</b> ",
+                 "<br>#Tile: ", forplot$var1_ntile,
+                 "<br>",labfillvl1  %>% lapply(htmltools::HTML),
+                 "<br><b>",vl2,"</b> ",
+                 "<br>#Tile: ",forplot$var2_ntile,"</b> ",
+                 "<br>",labfillvl2  %>% lapply(htmltools::HTML))
+  
+  
+  if(!is.na(region_names)) labs <- paste0("<b>",forplot$region_name_label,"</b><br>",labs)
   
   labs <- purrr::map(labs, htmltools::HTML)
   
-  # are we adding a legend? we may not want to, if e.g. we're being clever and
-  # showing different bivariate choropleths (with the same palettes) at different
-  # zoom levels
   
   leaflet(options = leafletOptions(zoomControl = T,
                                    minZoom = 4)) %>%
     setView(11.5 , 55, 3.5) %>%
     addProviderTiles("Esri.WorldTopoMap",
                      group = "Topo") %>%
-    leaflet::addPolygons(
-      data = forplot,
-      label = labs,
-      fillColor = ~ pal_colour,
-      color = "grey",
-      weight = 1,
-      smoothFactor = 0,
-      fillOpacity = 0.5,
-      highlightOptions = highlightOptions(
-        color = "white",
-        weight = 4,
-        bringToFront = TRUE
-      ),
-      labelOptions = labelOptions(
-        style = list("font-weight" = "normal", padding = "3px 8px"),
-        textsize = "15px",
-        direction = "auto"
-      )
-    ) %>%
-    addControl(html = palette_html,
-               position = "bottomright", )
+    leaflet::addPolygons(data = forplot,
+                         label = labs,
+                         fillColor = ~pal_colour,
+                         color = "grey",
+                         weight = 1,
+                         smoothFactor = 0,
+                         fillOpacity = 0.5,
+                         highlightOptions = highlightOptions(
+                           color = "white",
+                           weight = 4,
+                           bringToFront = TRUE
+                         ),
+                         labelOptions = labelOptions(
+                           style = list("font-weight" = "normal", padding = "3px 8px"),
+                           textsize = "15px",
+                           direction = "auto"
+                         )
+    )%>%
+    addControl(
+      html = palette_html,
+      position = "bottomright",
+    )
   
 }
