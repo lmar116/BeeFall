@@ -29,10 +29,8 @@ monocol <- colorRampPalette(
 )
 
 plotmapfunc <- function(layer, type = "Other", colour = tempcol, legend= "On") {
-  # #value as to whether == distribution map
-  # grepval <- as.integer(grepl("dist", deparse(substitute(layer))))
-  
-  if (type == "Distribution") {
+ 
+ if (type == "Distribution") {
     labels <-
       sprintf(
         "<strong>%s</strong><br/>%s%% comparatively undersampled",
@@ -234,8 +232,6 @@ plotmapfunc.bivar <- function(layer,
                           forplot$var2)
   }
   
-  
-  ############fix this
   labs <- paste0("<b>",vl1,"</b> ",
                  "<br>#Tile: ", forplot$var1_ntile,
                  "<br>",labfillvl1  %>% lapply(htmltools::HTML),
