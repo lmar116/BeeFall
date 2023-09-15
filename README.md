@@ -37,3 +37,4 @@ Shiny UI & Server: Shiny UI and server code for BeeFall
 
 Plotting Functions: plotting functions needed to run BeeFall
 
+![image](https://github.com/lmar116/BeeFall/assets/33490288/95eebfa8-47b0-4557-b525-8f00e6b621e2)
