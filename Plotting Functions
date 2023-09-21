@@ -1,6 +1,102 @@
+sessionInfo()
+#R version 4.2.2 (2022-10-31 ucrt)
+#Platform: x86_64-w64-mingw32/x64 (64-bit)
+#Running under: Windows 10 x64 (build 22621)
+
+#attached packages:      
+#[1] RColorBrewer_1.1-3 
+#[2] leaflet_2.1.1       
+#[3] sf_1.0-9            
+#[4] rgdal_1.6-4 
+
+#_____________________________________________________________________________________________________________________________________________
+library(leaflet
+library(dplyr)
+library(RColorBrewer)
+library(rgdal)
+luibrary(sf)
+
+#_____________________________________________________________________________________________________________________________________________
+sfs <- c(
+  "Distribution (Wallacean)" = "Distribution",
+  "Coverage (Wallacean)" = "Coverage",
+  "Checklist (Wallacean)" = "Checklist",
+  "Trait Incompleteness (Raunkiærian)" = "TraitsC",
+  "Missing Traits (Raunkiærian)" = "TraitsM",
+  "Population (Prestonian)" = "Population",
+  "Data Deficient (Prestonian)" = "Deficient",
+  "Genes (Darwinian)" = "Genes",
+  "Interactions (Eltonian)" = "Interactions",
+  "Photos Flickr (Keartonian)" = "Photosf",
+  "Photos iNat (Keartonian)" = "Photosi",
+  "Descriptions (Linnean)"= "Description"
+)
+
+sfstable <-
+  data.frame(
+    Name = c(
+      "Distribution",
+      "Coverage",
+      "Checklist",
+      "TraitsC",
+      "TraitsM",
+      "Population",
+      "Deficient",
+      "Genes",
+      "Interactions",
+      "Photosf",
+      "Photosi",
+      "Description"
+    ),
+    Longname = c(
+      "Distribution (Wallacean)",
+      "Coverage (Wallacean)" = "Coverage",
+      "Checklist (Wallacean)" = "Checklist",
+      "Trait Incompleteness (Raunkiærian)" = "TraitsC",
+      "Missing Traits (Raunkiærian)" = "TraitsM",
+      "Population (Prestonian)" = "Population",
+      "Data Deficient (Prestonian)" = "Deficient",
+      "Genes (Darwinian)",
+      "Interactions (Eltonian)",
+      "Photos Flickr (Keartonian)" = "Photosf",
+      "Photos iNat (Keartonian)" = "Photosi",
+      "Descriptions (Linnean)"
+    ),
+    Shortfall = c(
+      "Wallacean",
+      "Wallacean",
+      "Wallacean",
+      "Raunkiærian",
+      "Raunkiærian",
+      "Prestonian",
+      "Prestonian",
+      "Darwinian",
+      "Eltonian",
+      "Keartonian",
+      "Keartonian",
+      "Linnean"
+    ),
+    Description = c(
+      "Predicted Sampling",
+      "Coverage",
+      "Checklist",
+      "Trait Completeness",
+      "Missing Trait",
+      "Population Trend",
+      "Red List (DD)",
+      "COI Barcode",
+      "Interaction",
+
+      "Photos (Flickr)",
+      "Photos (iNaturalist)",
+      "Species Description"
+    )
+  )
+
+#_____________________________________________________________________________________________________________________________________________
 tempcol <- colorRampPalette(
   c(
-    "blue",
+          "blue",
           "turquoise3",
           "chartreuse4",
           "yellowgreen",
@@ -13,7 +109,7 @@ tempcol <- colorRampPalette(
 
 monocol <- colorRampPalette(
   c(
-    "#FAF7F5",
+             "#FAF7F5",
              "#FBEEE6",
              "#F6DDCC",
              "#EDBB99",
@@ -28,9 +124,12 @@ monocol <- colorRampPalette(
   )
 )
 
+#_____________________________________________________________________________________________________________________________________________
 plotmapfunc <- function(layer, type = "Other", colour = tempcol, legend= "On") {
- 
- if (type == "Distribution") {
+  # #value as to whether == distribution map
+  # grepval <- as.integer(grepl("dist", deparse(substitute(layer))))
+  
+  if (type == "Distribution") {
     labels <-
       sprintf(
         "<strong>%s</strong><br/>%s%% comparatively undersampled",
@@ -60,7 +159,29 @@ plotmapfunc <- function(layer, type = "Other", colour = tempcol, legend= "On") {
     title="Rate of new species descriptions since 1990 (%)"
   }
   
-  if (type != "Distribution" & type != "Checklist"& type != "Description") {
+  if (type == "Coverage") {
+    labels <-
+      sprintf(
+        "<strong>%s</strong><br/>%s%% sample incompleteness",
+        layer$name,
+        round(layer$sr, 2)
+      ) %>% lapply(htmltools::HTML)
+    title="Average sample incompleteness (inverse coverage) (%)"
+  }
+  
+  if (type == "TraitsC") {
+    labels <-
+      sprintf(
+        "<strong>%s</strong><br/>%s%% trait incompleteness",
+        layer$name,
+        round(layer$sr, 2)
+      ) %>% lapply(htmltools::HTML)
+    title="Average missing trait data (%)"
+  }
+  
+  
+  if (type != "Distribution" & type != "Checklist"& type != "Description"& 
+      type != "Coverage"& type != "TraitsC") {
     labels <-
       sprintf("<strong>%s</strong><br/>%s species missing data",
               layer$name,
@@ -76,9 +197,11 @@ plotmapfunc <- function(layer, type = "Other", colour = tempcol, legend= "On") {
   leaflet(options = leafletOptions(zoomControl = T,
                                    minZoom = 4)) %>%
     setView(11.5 , 55, 3.5) %>%
-
+    #addProviderTiles(providers$Stamen.Toner) %>%
+    #addProviderTiles("Esri.WorldImagery") %>%
     addProviderTiles("Esri.WorldTopoMap",
                      group = "Topo") %>%
+    #addProviderTiles("CartoDB.Positron",     group = "CartoDB") %>%
     addPolygons(
       data = layer,
       color = "grey",
@@ -107,33 +230,29 @@ plotmapfunc <- function(layer, type = "Other", colour = tempcol, legend= "On") {
       title = title,
       position = "bottomright"
     )
-      #}
+  #}
 }
 
+#_____________________________________________________________________________________________________________________________________________
 plotmapfunc.bivar <- function(layer, 
                               var1_name, 
                               var2_name, 
                               ntiles = 4,
                               var1_label = NA, 
                               var2_label = NA,
-                              label_arrows = TRUE,
                               region_names = NA,
                               paletteFunction = pals::arc.bluepink){
-  
+
+#get correct axis labels including description from sfstable
   if (is.na(var1_label)) var1_label <- rlang::enexpr(var1_name)
   if(is.na(var2_label))  var2_label <- rlang::enexpr(var2_name)
+    
+  var1_lab <- as.character(sfstable %>%  filter(Name==var1_label) %>% dplyr::select(Description))
+  var2_lab <- as.character(sfstable %>%  filter(Name==var2_label) %>% dplyr::select(Description))
   
-  
-  # separate labels for the palette and the map, if so desired
-  var1_pal_label <- var1_label
-  var2_pal_label <- var2_label
-  
-  # are we putting fun arrows on the labels?
-  if (label_arrows){
-    var1_pal_label <- paste0(var1_label," Gaps", " \U2192")
-    var2_pal_label <- paste0(var2_label," Gaps", " \U2192")
-  }
-  
+  var1_pal_label <- paste0(var1_lab," Gaps", " \U2192")
+  var2_pal_label <- paste0(var2_lab," Gaps", " \U2192")
+
   bivar_pal <- function(x) paletteFunction(n=ntiles^2)[x]
   
   forplot <- layer %>%
@@ -144,18 +263,15 @@ plotmapfunc.bivar <- function(layer,
                   pal_num = var1_ntile + (var2_ntile - 1)*ntiles,#(ntiles -var1_ntile)*3 + var2_ntile,
                   pal_colour = bivar_pal(pal_num))
   
-  #
   if (!is.na(region_names)) forplot <- dplyr::rename(forplot,
                                                      region_name_label = region_names)
-  
-  # set up some css for the html palette swatch
+
   palette_size_px <- 120
   swatch_size_px <- round(palette_size_px / ntiles)
   
   row_col_px <- rep(paste0(swatch_size_px,"px"), times = ntiles) %>%
     stringr::str_flatten(collapse = " ") %>%
     paste0(., ";")
-  
   
   div_var1 <- paste0('<div class = "var1-label" style="grid-row-start:1; grid-row-end:',(ntiles+1),'; text-align: center; writing-mode: tb-rl;
         transform: rotate(-180deg);">',var1_pal_label,'</div>')
@@ -187,7 +303,7 @@ plotmapfunc.bivar <- function(layer,
     div_var2,
     '</div>')
   
-  #get full name
+  #get full name of shortfall
   st1 <- sfstable %>% filter(Name==var1_label)
   Shortfall1 <- st1$Shortfall
   st2 <- sfstable %>% filter(Name==var2_label)
@@ -222,12 +338,34 @@ plotmapfunc.bivar <- function(layer,
     labfillvl2 <- sprintf("%s%% rate of new species descriptions since 1990",
                           round(forplot$var2, 2))
   }
-  if (var1_label != "Distribution" & var1_label != "Checklist"& var1_label != "Description") {
+  if (var1_label == "Coverage") {
+    labfillvl1 <- sprintf("%s%% of sampling incompleteness",
+                          round(forplot$var1, 0))
+  }
+  if (var2_label == "Coverage") {
+    labfillvl2 <- sprintf("%s%% of sampling incompleteness",
+                          round(forplot$var2, 0))
+  }
+  
+  if (var1_label == "TraitsC") {
+    labfillvl1 <- sprintf("%s%% of trait incompleteness",
+                          round(forplot$var1, 2))
+  }
+  if (var2_label == "TraitsC") {
+    labfillvl2 <- sprintf("%s%% of trait incompleteness",
+                          round(forplot$var2, 2))
+  }
+  
+  
+  
+  if (var1_label != "Distribution" & var1_label != "Checklist"& var1_label != "Description"
+      & var1_label != "Coverage"& var1_label != "TraitsC") {
     labfillvl1 <- sprintf("%s species missing data",
                           forplot$var1)
   }
   
-  if (var2_label != "Distribution" & var2_label != "Checklist"& var2_label != "Description") {
+  if (var2_label != "Distribution" & var2_label != "Checklist"& var2_label != "Description"
+      & var2_label != "Coverage"& var2_label != "TraitsC") {
     labfillvl2 <- sprintf("%s species missing data",
                           forplot$var2)
   }
@@ -243,8 +381,7 @@ plotmapfunc.bivar <- function(layer,
   if(!is.na(region_names)) labs <- paste0("<b>",forplot$region_name_label,"</b><br>",labs)
   
   labs <- purrr::map(labs, htmltools::HTML)
-  
-  
+    
   leaflet(options = leafletOptions(zoomControl = T,
                                    minZoom = 4)) %>%
     setView(11.5 , 55, 3.5) %>%
@@ -272,5 +409,4 @@ plotmapfunc.bivar <- function(layer,
       html = palette_html,
       position = "bottomright",
     )
-  
 }
