@@ -1,0 +1,653 @@
+<html>
+  <head>
+    <title>Data for BEEFALL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="application/ld+json">
+      {
+  "@context": "http://schema.org",
+  "type": "Dataset",
+  "name": "Data for BEEFALL",
+  "creator": [
+    {
+      "type": "Person",
+      "id": "0000-0002-7819-7005 (ORCiD)",
+      "email": "leon.marshall@naturalis.nl",
+      "affiliation": "Université Libre de Bruxelles and Naturalis Biodiversity Center",
+      "name": "Leon Marshall"
+    }
+  ],
+  "description": "Raw data for BEEFALL V0.1",
+  "datePublished": "18-09-2023",
+  "keywords": ["knowledge gaps; big data; online tool; biodiversity decline; citizen science; biodiversity monitoring", "shiny app"],
+  "funder": null,
+  "temporalCoverage": "2023/-",
+  "license": null,
+  "spatialCoverage": {
+    "type": "Place",
+    "name": "Europe",
+    "geo": {
+      "type": "GeoShape",
+      "box": "71.18416 -31.28466 27.64252 34.59254"
+    }
+  },
+  "variableMeasured": [
+    {
+      "type": "PropertyValue",
+      "unitText": "Text",
+      "name": "Order",
+      "description": "Order taxonomic rank of all species in the study."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Text",
+      "name": "Family",
+      "description": "Family taxonomic rank of all species in the study."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Text",
+      "name": "Subfamily",
+      "description": "Subfamily taxonomic rank of all species in the study."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Text",
+      "name": "Tribe",
+      "description": "Tribe taxonomic rank of all species in the study."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Text",
+      "name": "Subtribe",
+      "description": "Subtribe taxonomic rank of all species in the study."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Text",
+      "name": "Genus",
+      "description": "Genus taxonomic rank of all species in the study."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Text",
+      "name": "Subgenus",
+      "description": "Subgenus taxonomic rank of all species in the study."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Text",
+      "name": "Species",
+      "description": "Species taxonomic rank of all species in the study."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Text",
+      "name": "Binomial",
+      "description": "Genus and species name of all species  in the study."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Text",
+      "name": "TaxonomicAuthority",
+      "description": "Taxonomic authority of all species  in the study."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Text",
+      "name": "YearofDescription",
+      "description": "Year of description of all species in the study."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Text",
+      "name": "ProvID",
+      "description": "NUTS statistical regions corresponds to codes in european_regions_shapefile_20230918.shp"
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Text",
+      "name": "CountryID",
+      "description": "Alpha-3 code for countries corresponds to codes in european_countries_shapefile_20230918.shp. For regions treated as countries in the analysis we use the NUTS regional code instead."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Logical",
+      "name": "DistributionRecords",
+      "description": "Presence of absence of distribution records for a species on the checklist of the country listed in column 13."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Logical",
+      "name": "GeneticData",
+      "description": "Presence or absence of COI barcodes on BOLD or GENBANK."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Logical",
+      "name": "PopTrend",
+      "description": "Logical whether there is sufficient data (minimum of 3 records for at least 10 separate years after 1950) to calculate population trends."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Text",
+      "name": "RL_EU_2015",
+      "description": "Red List status from European Red List of Wild Bees. Nieto, A., et al. (2014). European Red List of bees. Luxembourg: Publication Office of the European Union."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Numeric",
+      "name": "TraitIncompleteness",
+      "description": "Percentage of trait data missing for the 7 key traits used in the analysis; body size (averaged intertegular distance of females) sociality, nesting habit, feeding specialization, whether they can utilize buzz pollination voltinism (number of generations per year), and how they transport pollen."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Logical",
+      "name": "MissingTraits",
+      "description": "Logical whether a species is missing data for any 1 or the 7 key traits used in the analysis; body size (averaged intertegular distance of females) sociality, nesting habit, feeding specialization, whether they can utilize buzz pollination voltinism (number of generations per year), and how they transport pollen."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Logical",
+      "name": "InteractionData",
+      "description": "Logical whether interaction data is available for the species on on mangal.io or www.web-of-life.es."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Logical",
+      "name": "Photos(Flickr)",
+      "description": "Logical whether high-quality in-situ photos exist for the species on flickr.com."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Logical",
+      "name": "Photos(iNat)",
+      "description": "Logical whether photos exist for the species on iNaturalist.com."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Text",
+      "name": "RegionalName",
+      "description": "Name of region where species is known from."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Text",
+      "name": "CountryName",
+      "description": "Name of country where species is known from."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Numeric",
+      "name": "ComparativeUndersampling",
+      "description": "Inverse percentage of the normalized log of the 'AverageModelDifference'."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Numeric",
+      "name": "AverageModelDifference",
+      "description": "Average of the difference between modeled predictions of taxonomic wild bee richness against observed richness."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Numeric",
+      "name": "StandardDeviationModelDifference",
+      "description": "Standard deviation of the difference between modeled predictions of taxonomic wild bee richness against observed richness."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Numeric",
+      "name": "AverageSamplingCoverage",
+      "description": "Average sampling completeness (coverage) for each 25 x 25 km grid cell covering our study area using the iNext package in R."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Numeric",
+      "name": "StandardDeviationSamplingCoverage",
+      "description": "Standard deviation of sampling completeness (coverage) for each 25 x 25 km grid cell covering our study area using the iNext package in R."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Numeric",
+      "name": "Richness",
+      "description": "Total checklist richness. See: Reverté, S., et al. (2023). National records of 3000 European bee and hoverfly species: A contribution to pollinator conservation. Insect Conservation and Diversity."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Numeric",
+      "name": "WithDistData",
+      "description": "Number of species on the checklist with distribution data from the sources included in the study."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Numeric",
+      "name": "WithoutDistData",
+      "description": "Number of species on the checklist without distribution data from the sources included in the study."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Numeric",
+      "name": "PropWithDistData",
+      "description": "Proportion of species on the checklist with distribution data from the sources included in the study."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Numeric",
+      "name": "PropWithoutDistData",
+      "description": "Proportion of species on the checklist without distribution data from the sources included in the study."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Numeric",
+      "name": "RateofDescription",
+      "description": "Percentage annual growth rate of the the cumulative species richness using 'YearofDescription'."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Text",
+      "name": "ProvID",
+      "description": "NUTS statistical regions corresponds to codes in speciescount_shortfalls_EU_20230918.csv, regionallyaggregated_shortfalls_EU_20230918.csv and countryaggregated_shortfalls_EU_20230918.csv."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Text",
+      "name": "geometry",
+      "description": "Geometry of sf object in R."
+    },
+    {
+      "type": "PropertyValue",
+      "unitText": "Text",
+      "name": "CountryID",
+      "description": "Alpha-3 code for countries corresponds to codes in speciescount_shortfalls_EU_20230918.csv, regionallyaggregated_shortfalls_EU_20230918.csv and countryaggregated_shortfalls_EU_20230918.csv. For regions treated as countries in the analysis we use the NUTS regional code instead."
+    }
+  ],
+  "distribution": [
+    {
+      "type": "DataDownload",
+      "name": "Shortfalls(species)",
+      "contentUrl": "https://github.com/lmar116/BeeFall/blob/6f39faac1ba3be364b4a15fbdaa8efaef0a6207e/Data/speciescount_shortfalls_EU_20230918.csv",
+      "encodingFormat": "csv"
+    },
+    {
+      "type": "DataDownload",
+      "name": "Shortfalls(regions)",
+      "contentUrl": "https://github.com/lmar116/BeeFall/blob/6f39faac1ba3be364b4a15fbdaa8efaef0a6207e/Data/regionallyaggregated_shortfalls_EU_20230918.csv",
+      "encodingFormat": "csv"
+    },
+    {
+      "type": "DataDownload",
+      "name": "Shortfalls(countries)",
+      "contentUrl": "https://github.com/lmar116/BeeFall/blob/6f39faac1ba3be364b4a15fbdaa8efaef0a6207e/Data/countryaggregated_shortfalls_EU_20230918.csv",
+      "encodingFormat": "csv"
+    },
+    {
+      "type": "DataDownload",
+      "name": "Shapefile(regions)",
+      "contentUrl": "https://github.com/lmar116/BeeFall/blob/6f39faac1ba3be364b4a15fbdaa8efaef0a6207e/Data/european_regions_shapefile_20230918.shp",
+      "encodingFormat": "shp"
+    },
+    {
+      "type": "DataDownload",
+      "name": "Shapefile(countries)",
+      "contentUrl": "https://github.com/lmar116/BeeFall/blob/6f39faac1ba3be364b4a15fbdaa8efaef0a6207e/Data/european_countries_shapefile_20230918.shp",
+      "encodingFormat": "shp"
+    }
+  ]
+}
+
+    </script>
+    <style>
+      body {
+        font-size: 16px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        margin: 0 auto;
+        padding: 1rem;
+        max-width: 800px;
+      }
+
+      #map {
+        height: 20rem;
+      }
+
+      #attributes-wrapper,
+      #jsonld-wrapper {
+        height: 20rem;
+        overflow-y: scroll;
+      }
+
+      table {
+        border-collapse: collapse;
+      }
+
+      th {
+        border-bottom: 1px solid black;
+      }
+
+      th, td {
+        padding: 0.25rem;
+      }
+
+      table.listing td {
+        border: 1px solid #CCC;
+      }
+
+      table.listing tr td:first-child {
+          background-color: #EEE;
+      }
+
+      table.listing ul {
+        margin: 0 0 0 1.5rem;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Data for BEEFALL</h1>
+    <p><strong>Description:</strong> Raw data for BEEFALL V0.1</p>
+
+    <h2>Bibliographic</h2>
+
+    <table class="listing">
+      <tr>
+        <td>Published</td>
+        <td>18-09-2023</td>
+      </tr>
+      <tr>
+        <td>Keywords</td>
+        <td>
+          <ul>
+            <li>knowledge gaps; big data; online tool; biodiversity decline; citizen science; biodiversity monitoring</li>
+            <li>shiny app</li>
+        </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>Funder</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>License</td>
+        <td></td>
+      </tr>
+    </table>
+
+    <h2>Coverage</h2>
+
+    <h3>Temporal</h3>
+
+    <table class="listing">
+      <tr>
+        <td>Begin</td>
+        <td>2023</td>
+      </tr>
+      <tr>
+        <td>End</td>
+        <td>-</td>
+      </tr>
+    </table>
+
+    <h3>Spatial</h3>
+    <pre><code></code></pre>
+    <div id="map"></div>
+
+    <h2>Attributes</h2>
+
+    <div id="attributes-wrapper">
+      <table id="attributes">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Unit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>Order</code></td>
+            <td>Order taxonomic rank of all species in the study.</td>
+            <td>Text</td>
+          </tr>
+          <tr>
+            <td><code>Family</code></td>
+            <td>Family taxonomic rank of all species in the study.</td>
+            <td>Text</td>
+          </tr>
+          <tr>
+            <td><code>Subfamily</code></td>
+            <td>Subfamily taxonomic rank of all species in the study.</td>
+            <td>Text</td>
+          </tr>
+          <tr>
+            <td><code>Tribe</code></td>
+            <td>Tribe taxonomic rank of all species in the study.</td>
+            <td>Text</td>
+          </tr>
+          <tr>
+            <td><code>Subtribe</code></td>
+            <td>Subtribe taxonomic rank of all species in the study.</td>
+            <td>Text</td>
+          </tr>
+          <tr>
+            <td><code>Genus</code></td>
+            <td>Genus taxonomic rank of all species in the study.</td>
+            <td>Text</td>
+          </tr>
+          <tr>
+            <td><code>Subgenus</code></td>
+            <td>Subgenus taxonomic rank of all species in the study.</td>
+            <td>Text</td>
+          </tr>
+          <tr>
+            <td><code>Species</code></td>
+            <td>Species taxonomic rank of all species in the study.</td>
+            <td>Text</td>
+          </tr>
+          <tr>
+            <td><code>Binomial</code></td>
+            <td>Genus and species name of all species  in the study.</td>
+            <td>Text</td>
+          </tr>
+          <tr>
+            <td><code>TaxonomicAuthority</code></td>
+            <td>Taxonomic authority of all species  in the study.</td>
+            <td>Text</td>
+          </tr>
+          <tr>
+            <td><code>YearofDescription</code></td>
+            <td>Year of description of all species in the study.</td>
+            <td>Text</td>
+          </tr>
+          <tr>
+            <td><code>ProvID</code></td>
+            <td>NUTS statistical regions corresponds to codes in european_regions_shapefile_20230918.shp</td>
+            <td>Text</td>
+          </tr>
+          <tr>
+            <td><code>CountryID</code></td>
+            <td>Alpha-3 code for countries corresponds to codes in european_countries_shapefile_20230918.shp. For regions treated as countries in the analysis we use the NUTS regional code instead.</td>
+            <td>Text</td>
+          </tr>
+          <tr>
+            <td><code>DistributionRecords</code></td>
+            <td>Presence of absence of distribution records for a species on the checklist of the country listed in column 13.</td>
+            <td>Logical</td>
+          </tr>
+          <tr>
+            <td><code>GeneticData</code></td>
+            <td>Presence or absence of COI barcodes on BOLD or GENBANK.</td>
+            <td>Logical</td>
+          </tr>
+          <tr>
+            <td><code>PopTrend</code></td>
+            <td>Logical whether there is sufficient data (minimum of 3 records for at least 10 separate years after 1950) to calculate population trends.</td>
+            <td>Logical</td>
+          </tr>
+          <tr>
+            <td><code>RL_EU_2015</code></td>
+            <td>Red List status from European Red List of Wild Bees. Nieto, A., et al. (2014). European Red List of bees. Luxembourg: Publication Office of the European Union.</td>
+            <td>Text</td>
+          </tr>
+          <tr>
+            <td><code>TraitIncompleteness</code></td>
+            <td>Percentage of trait data missing for the 7 key traits used in the analysis; body size (averaged intertegular distance of females) sociality, nesting habit, feeding specialization, whether they can utilize buzz pollination voltinism (number of generations per year), and how they transport pollen.</td>
+            <td>Numeric</td>
+          </tr>
+          <tr>
+            <td><code>MissingTraits</code></td>
+            <td>Logical whether a species is missing data for any 1 or the 7 key traits used in the analysis; body size (averaged intertegular distance of females) sociality, nesting habit, feeding specialization, whether they can utilize buzz pollination voltinism (number of generations per year), and how they transport pollen.</td>
+            <td>Logical</td>
+          </tr>
+          <tr>
+            <td><code>InteractionData</code></td>
+            <td>Logical whether interaction data is available for the species on on mangal.io or www.web-of-life.es.</td>
+            <td>Logical</td>
+          </tr>
+          <tr>
+            <td><code>Photos(Flickr)</code></td>
+            <td>Logical whether high-quality in-situ photos exist for the species on flickr.com.</td>
+            <td>Logical</td>
+          </tr>
+          <tr>
+            <td><code>Photos(iNat)</code></td>
+            <td>Logical whether photos exist for the species on iNaturalist.com.</td>
+            <td>Logical</td>
+          </tr>
+          <tr>
+            <td><code>RegionalName</code></td>
+            <td>Name of region where species is known from.</td>
+            <td>Text</td>
+          </tr>
+          <tr>
+            <td><code>CountryName</code></td>
+            <td>Name of country where species is known from.</td>
+            <td>Text</td>
+          </tr>
+          <tr>
+            <td><code>ComparativeUndersampling</code></td>
+            <td>Inverse percentage of the normalized log of the 'AverageModelDifference'.</td>
+            <td>Numeric</td>
+          </tr>
+          <tr>
+            <td><code>AverageModelDifference</code></td>
+            <td>Average of the difference between modeled predictions of taxonomic wild bee richness against observed richness.</td>
+            <td>Numeric</td>
+          </tr>
+          <tr>
+            <td><code>StandardDeviationModelDifference</code></td>
+            <td>Standard deviation of the difference between modeled predictions of taxonomic wild bee richness against observed richness.</td>
+            <td>Numeric</td>
+          </tr>
+          <tr>
+            <td><code>AverageSamplingCoverage</code></td>
+            <td>Average sampling completeness (coverage) for each 25 x 25 km grid cell covering our study area using the iNext package in R.</td>
+            <td>Numeric</td>
+          </tr>
+          <tr>
+            <td><code>StandardDeviationSamplingCoverage</code></td>
+            <td>Standard deviation of sampling completeness (coverage) for each 25 x 25 km grid cell covering our study area using the iNext package in R.</td>
+            <td>Numeric</td>
+          </tr>
+          <tr>
+            <td><code>Richness</code></td>
+            <td>Total checklist richness. See: Reverté, S., et al. (2023). National records of 3000 European bee and hoverfly species: A contribution to pollinator conservation. Insect Conservation and Diversity.</td>
+            <td>Numeric</td>
+          </tr>
+          <tr>
+            <td><code>WithDistData</code></td>
+            <td>Number of species on the checklist with distribution data from the sources included in the study.</td>
+            <td>Numeric</td>
+          </tr>
+          <tr>
+            <td><code>WithoutDistData</code></td>
+            <td>Number of species on the checklist without distribution data from the sources included in the study.</td>
+            <td>Numeric</td>
+          </tr>
+          <tr>
+            <td><code>PropWithDistData</code></td>
+            <td>Proportion of species on the checklist with distribution data from the sources included in the study.</td>
+            <td>Numeric</td>
+          </tr>
+          <tr>
+            <td><code>PropWithoutDistData</code></td>
+            <td>Proportion of species on the checklist without distribution data from the sources included in the study.</td>
+            <td>Numeric</td>
+          </tr>
+          <tr>
+            <td><code>RateofDescription</code></td>
+            <td>Percentage annual growth rate of the the cumulative species richness using 'YearofDescription'.</td>
+            <td>Numeric</td>
+          </tr>
+          <tr>
+            <td><code>ProvID</code></td>
+            <td>NUTS statistical regions corresponds to codes in speciescount_shortfalls_EU_20230918.csv, regionallyaggregated_shortfalls_EU_20230918.csv and countryaggregated_shortfalls_EU_20230918.csv.</td>
+            <td>Text</td>
+          </tr>
+          <tr>
+            <td><code>geometry</code></td>
+            <td>Geometry of sf object in R.</td>
+            <td>Text</td>
+          </tr>
+          <tr>
+            <td><code>CountryID</code></td>
+            <td>Alpha-3 code for countries corresponds to codes in speciescount_shortfalls_EU_20230918.csv, regionallyaggregated_shortfalls_EU_20230918.csv and countryaggregated_shortfalls_EU_20230918.csv. For regions treated as countries in the analysis we use the NUTS regional code instead.</td>
+            <td>Text</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Distribution</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>File</th>
+          <th>Format</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>Shortfalls(species)</code></td>
+          <td><code>csv</code></td>
+          <td><a href="https://github.com/lmar116/BeeFall/blob/6f39faac1ba3be364b4a15fbdaa8efaef0a6207e/Data/speciescount_shortfalls_EU_20230918.csv">Download</a></td>
+        </tr>
+        <tr>
+          <td><code>Shortfalls(regions)</code></td>
+          <td><code>csv</code></td>
+          <td><a href="https://github.com/lmar116/BeeFall/blob/6f39faac1ba3be364b4a15fbdaa8efaef0a6207e/Data/regionallyaggregated_shortfalls_EU_20230918.csv">Download</a></td>
+        </tr>
+        <tr>
+          <td><code>Shortfalls(countries)</code></td>
+          <td><code>csv</code></td>
+          <td><a href="https://github.com/lmar116/BeeFall/blob/6f39faac1ba3be364b4a15fbdaa8efaef0a6207e/Data/countryaggregated_shortfalls_EU_20230918.csv">Download</a></td>
+        </tr>
+        <tr>
+          <td><code>Shapefile(regions)</code></td>
+          <td><code>shp</code></td>
+          <td><a href="https://github.com/lmar116/BeeFall/blob/6f39faac1ba3be364b4a15fbdaa8efaef0a6207e/Data/european_regions_shapefile_20230918.shp">Download</a></td>
+        </tr>
+        <tr>
+          <td><code>Shapefile(countries)</code></td>
+          <td><code>shp</code></td>
+          <td><a href="https://github.com/lmar116/BeeFall/blob/6f39faac1ba3be364b4a15fbdaa8efaef0a6207e/Data/european_countries_shapefile_20230918.shp">Download</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+  integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+  crossorigin=""></script>
+    <script>
+      var mymap = L.map('map').setView([49.41334, 1.65394], 1);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+        maxZoom: 18,
+      }).addTo(mymap);
+
+      var polygon = L.polygon([[ 71.18416, -31.28466], [ 27.64252, -31.28466], [ 27.64252, 34.59254], [ 71.18416, 34.59254]]).addTo(mymap);
+    </script>
+  </body>
+</html>
