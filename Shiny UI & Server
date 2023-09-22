@@ -134,8 +134,7 @@ bootstrapPage(
     tabPanel("About",
              div(
                id = "aboutimg",
-               tags$iframe(style='height:2000px; width: 100%;',
-                 #style = "height:400px; width:100%; scrolling=yes",
+               tags$iframe(style='height:2400px; width: 100%;',
                            src = "AboutPage6UI.pdf")
              )),
     #-----------------------------------------`
