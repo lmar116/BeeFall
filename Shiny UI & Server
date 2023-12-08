@@ -1,4 +1,4 @@
-#UI
+#UI -- test commit
 ui <- tagList(tags$head(tags$style(
   HTML(
     "
@@ -27,7 +27,7 @@ bootstrapPage(
     
     ####------Main Tab------####
     tabPanel(
-      "Shortfalls in Wild Bee Data in Europe",
+      "Shortfalls in European Wild Bee Data",
       div(
         class = "outer",
         tags$head(includeCSS("./www/styles.css")),
