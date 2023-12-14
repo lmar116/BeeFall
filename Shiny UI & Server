@@ -1,5 +1,5 @@
 #UI
-ui <- tagList(tags$head(tags$style(
+ui <-  tagList(tags$head(tags$style(
   HTML(
     "
                           body > nav{
@@ -15,6 +15,8 @@ ui <- tagList(tags$head(tags$style(
   )
 )),
 
+
+
 bootstrapPage(
   navbarPage(
     theme = bslib::bs_theme(bootswatch = "flatly"),
@@ -24,7 +26,6 @@ bootstrapPage(
     ),
     id = "nav",
     windowTitle = "BeeFall",
-    
     ####------Main Tab------####
     tabPanel(
       "Shortfalls in European Wild Bee Data",
@@ -256,11 +257,11 @@ bootstrapPage(
                            src="AboutPage6UI.pdf")
              )),
     #-----------------------------------------`
-    ####------Contact Tab------####
+    ####------Info Tab------####
     tabPanel(
-      "Contact",
+      "Information",
       pageWithSidebar(
-        headerPanel("Contact"),
+        headerPanel("Information"),
         
         sidebarPanel(
           textInput("from", "From:", value = "...@..."),
@@ -282,6 +283,7 @@ bootstrapPage(
 
 #server######
 server <- function(input, output, session) {
+  
   toListen <- reactive({
     list(input$shortfall, input$resolution)
   })
@@ -329,64 +331,60 @@ server <- function(input, output, session) {
         if (input$resolution == "Province") {
           data <- switch(
             input$shortfall,
-            "Distribution" = nd.shp.prov,
             "Coverage" = nco.shp.prov,
-            "Photosf" = np.shp.prov,
-            "Photosi" = npi.shp.prov,
+            "Distribution" = nd.shp.prov,
+            "Genes" = ng.shp.prov,
+            "Population" = npt.shp.prov,
+            "Deficient" =  npd.shp.prov,
             "TraitsM" = nt.shp.prov,
             "TraitsC" = ntc.shp.prov,
-            "Genes" = ng.shp.prov,
             "Interactions" = nb.shp.prov,
-            #"Floral" = nbp.shp.prov,
-            "Population" = npt.shp.prov,
-            "Deficient" =  npd.shp.prov
+            "Photosf" = np.shp.prov,
+            "Photosi" = npi.shp.prov
           )
           data2 <- switch(
             input$shortfall2,
-            "Distribution" = nd.shp.prov,
             "Coverage" = nco.shp.prov,
-            "Photosf" = np.shp.prov,
-            "Photosi" = npi.shp.prov,
+            "Distribution" = nd.shp.prov,
+            "Genes" = ng.shp.prov,
+            "Population" = npt.shp.prov,
+            "Deficient" =  npd.shp.prov,
             "TraitsM" = nt.shp.prov,
             "TraitsC" = ntc.shp.prov,
-            "Genes" = ng.shp.prov,
             "Interactions" = nb.shp.prov,
-            #"Floral" = nbp.shp.prov,
-            "Population" = npt.shp.prov,
-            "Deficient" =  npd.shp.prov
+            "Photosf" = np.shp.prov,
+            "Photosi" = npi.shp.prov
           )
         } else{
           data <- switch(
             input$shortfall,
-            "Distribution" = nd.shp.c,
+            "Description" = nr.shp.c,
             "Checklist" = nc.shp.c,
             "Coverage" = nco.shp.c,
-            "Photosf" = np.shp.c,
-            "Photosi" = npi.shp.c,
+            "Distribution" = nd.shp.c,
+            "Genes" = ng.shp.c,
+            "Population" = npt.shp.c,
+            "Deficient" =  npd.shp.c,
             "TraitsM" = nt.shp.c,
             "TraitsC" = ntc.shp.c,
-            "Genes" = ng.shp.c,
             "Interactions" = nb.shp.c,
-            #"Floral" = nbp.shp.c,
-            "Population" = npt.shp.c,
-            "Description" = nr.shp.c,
-            "Deficient" =  npd.shp.c
+            "Photosf" = np.shp.c,
+            "Photosi" = npi.shp.c
           )
           data2 <- switch(
             input$shortfall2,
-            "Distribution" = nd.shp.c,
+            "Description" = nr.shp.c,
             "Checklist" = nc.shp.c,
             "Coverage" = nco.shp.c,
-            "Photosf" = np.shp.c,
-            "Photosi" = npi.shp.c,
+            "Distribution" = nd.shp.c,
+            "Genes" = ng.shp.c,
+            "Population" = npt.shp.c,
+            "Deficient" =  npd.shp.c,
             "TraitsM" = nt.shp.c,
             "TraitsC" = ntc.shp.c,
-            "Genes" = ng.shp.c,
             "Interactions" = nb.shp.c,
-            #"Floral" = nbp.shp.c,
-            "Population" = npt.shp.c,
-            "Description" = nr.shp.c,
-            "Deficient" =  npd.shp.c
+            "Photosf" = np.shp.c,
+            "Photosi" = npi.shp.c
           )
         }
         
@@ -412,64 +410,60 @@ server <- function(input, output, session) {
       if (input$resolution == "Province") {
         data <- switch(
           input$shortfall,
-          "Distribution" = nd.shp.prov,
           "Coverage" = nco.shp.prov,
-          "Photosf" = np.shp.prov,
-          "Photosi" = npi.shp.prov,
+          "Distribution" = nd.shp.prov,
+          "Genes" = ng.shp.prov,
+          "Population" = npt.shp.prov,
+          "Deficient" =  npd.shp.prov,
           "TraitsM" = nt.shp.prov,
           "TraitsC" = ntc.shp.prov,
-          "Genes" = ng.shp.prov,
           "Interactions" = nb.shp.prov,
-          #"Floral" = nbp.shp.prov,
-          "Population" = npt.shp.prov,
-          "Deficient" =  npd.shp.prov
+          "Photosf" = np.shp.prov,
+          "Photosi" = npi.shp.prov
         )
         data2 <- switch(
           input$shortfall2,
-          "Distribution" = nd.shp.prov,
           "Coverage" = nco.shp.prov,
-          "Photosf" = np.shp.prov,
-          "Photosi" = npi.shp.prov,
+          "Distribution" = nd.shp.prov,
+          "Genes" = ng.shp.prov,
+          "Population" = npt.shp.prov,
+          "Deficient" =  npd.shp.prov,
           "TraitsM" = nt.shp.prov,
           "TraitsC" = ntc.shp.prov,
-          "Genes" = ng.shp.prov,
           "Interactions" = nb.shp.prov,
-          #"Floral" = nbp.shp.prov,
-          "Population" = npt.shp.prov,
-          "Deficient" = npd.shp.prov
+          "Photosf" = np.shp.prov,
+          "Photosi" = npi.shp.prov
         )
       } else{
         data <- switch(
           input$shortfall,
-          "Distribution" = nd.shp.c,
+          "Description" = nr.shp.c,
           "Checklist" = nc.shp.c,
           "Coverage" = nco.shp.c,
-          "Photosf" = np.shp.c,
-          "Photosi" = npi.shp.c,
+          "Distribution" = nd.shp.c,
+          "Genes" = ng.shp.c,
+          "Population" = npt.shp.c,
+          "Deficient" =  npd.shp.c,
           "TraitsM" = nt.shp.c,
           "TraitsC" = ntc.shp.c,
-          "Genes" = ng.shp.c,
           "Interactions" = nb.shp.c,
-          #"Floral" = nbp.shp.c,
-          "Population" = npt.shp.c,
-          "Description" = nr.shp.c,
-          "Deficient" = npd.shp.c
+          "Photosf" = np.shp.c,
+          "Photosi" = npi.shp.c
         )
         data2 <- switch(
           input$shortfall2,
-          "Distribution" = nd.shp.c,
+          "Description" = nr.shp.c,
           "Checklist" = nc.shp.c,
           "Coverage" = nco.shp.c,
-          "Photosf" = np.shp.c,
-          "Photosi" = npi.shp.c,
+          "Distribution" = nd.shp.c,
+          "Genes" = ng.shp.c,
+          "Population" = npt.shp.c,
+          "Deficient" =  npd.shp.c,
           "TraitsM" = nt.shp.c,
           "TraitsC" = ntc.shp.c,
-          "Genes" = ng.shp.c,
           "Interactions" = nb.shp.c,
-          #"Floral" = nbp.shp.c,
-          "Population" = npt.shp.c,
-          "Description" = nr.shp.c,
-          "Deficient" = npd.shp.c
+          "Photosf" = np.shp.c,
+          "Photosi" = npi.shp.c
         )
       }
       
@@ -701,16 +695,6 @@ server <- function(input, output, session) {
       escape = FALSE,
     )
   }, server = FALSE)
-  
-  observe({
-    if (is.null(input$send) || input$send == 0)
-      return(NULL)
-    from <- isolate(input$from)
-    to <- "leon.marshall@ulb.be"
-    subject <- isolate(input$subject)
-    msg <- isolate(input$message)
-    sendmail(from, to, subject, msg)
-  })
   
 } # end of server
 
