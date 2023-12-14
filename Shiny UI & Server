@@ -1,4 +1,4 @@
-#UI -- test commit
+#UI
 ui <- tagList(tags$head(tags$style(
   HTML(
     "
@@ -30,7 +30,9 @@ bootstrapPage(
       "Shortfalls in European Wild Bee Data",
       div(
         class = "outer",
-        tags$head(includeCSS("./www/styles.css")),
+        tags$head(
+          includeCSS("./www/styles.css")
+        ),
         leafletOutput("map", width = "100%", height =
                         "100%"),
         
@@ -50,7 +52,7 @@ bootstrapPage(
           
           img(src = "logov3.png", height = 140),
           
-          helpText("Visualize data shortfalls for European wild bee species"),
+          helpText("Visualize data shortfalls and impediments for European wild bee species"),
           
           radioButtons(
             "resolution",
@@ -63,7 +65,65 @@ bootstrapPage(
             "shortfall",
             h3("Shortfall"),
             choices = sfs,
-            selected = "Distribution"
+            selected = "Checklist"
+          ),
+          conditionalPanel(
+            condition = "input.shortfall == 'Checklist'",
+            helpText("Checklist Incompleteness: shows the percentage of the 
+                     total species richness without digitized, publicly-available
+                     occurrence data"),
+          ),
+          conditionalPanel(
+            condition = "input.shortfall == 'Distribution'",
+            helpText("Distribution: shows the scaled, inverse percentage of the 
+                     difference between observed and predicted species richness. 
+                     100 - greatest negative difference, 0 - greatest positive 
+                     difference."),
+          ),conditionalPanel(
+            condition = "input.shortfall == 'Coverage'",
+            helpText("Sampling Incompleteness: shows the inverse of the sample 
+                     coverage (how complete is the total sample of bee species)"),
+          ),conditionalPanel(
+            condition = "input.shortfall == 'Photosf'",
+            helpText("Photos Flickr: shows the count of species without high-quality
+                     in-situ photos on flickr.com"),
+          ),conditionalPanel(
+            condition = "input.shortfall == 'Photosi'",
+            helpText("Photos iNaturalist: shows the count of species without high-quality
+                     in-situ photos on iNaturalist"),
+          ),conditionalPanel(
+            condition = "input.shortfall == 'TraitsM'",
+            helpText("Missing Traits: shows the count of species missing one or 
+                     more of the 6 key traits. B = Body Size (ITD Females), 
+                     V = Voltinism, S = Sociality, N = Nesting, 
+                     F = Feeding specialization (Lecty) & P = Pollen transport"),
+          ),conditionalPanel(
+            condition = "input.shortfall == 'TraitsC'",
+            helpText("Trait Incompleteness: shows the average percentage of 
+                     missing traits of the 6 key traits. B = Body Size (ITD Females), 
+                     V = Voltinism, S = Sociality, N = Nesting, 
+                     F = Feeding specialization (Lecty) & P = Pollen transport"),
+          ),conditionalPanel(
+            condition = "input.shortfall == 'Genes'",
+            helpText("Missing Gene Sequences: shows the count of species missing
+                     COI sequences in online, publicly-available repositories."),
+          ),conditionalPanel(
+            condition = "input.shortfall == 'Interactions'",
+            helpText("Missing Plant Interactions: shows the count of species missing
+                     recorded interactions with plants in online, publicly-available repositories."),
+          ),conditionalPanel(
+            condition = "input.shortfall == 'Population'",
+            helpText("Missing Population Trend: shows the count of species 
+                     without a minimum 3 records for at least 10 separate years 
+                     since 1950."),
+          ),conditionalPanel(
+            condition = "input.shortfall == 'Description'",
+            helpText("Rate of New Descriptions: shows the mean rate of newly 
+                     described species per year in the checklist since 1990"),
+          ),conditionalPanel(
+            condition = "input.shortfall == 'Deficient'",
+            helpText("Data Deficiency: shows the count of species included in the 2014 
+                     European Red List of bees and the 2017 update as\"Data Deficient\"."),
           ),
           conditionalPanel(
             condition = "input.mapopts == 'Bivariate'",
@@ -71,8 +131,66 @@ bootstrapPage(
               "shortfall2",
               h3("2nd Shortfall"),
               choices = sfs,
-              selected = "Distribution"
+              selected = "Coverage"
             )
+          ),
+          conditionalPanel(
+            condition = "input.shortfall2 == 'Checklist'&input.mapopts == 'Bivariate'",
+            helpText("Checklist Incompleteness: shows the percentage of the 
+                     total species richness without digitized, publicly-available
+                     occurrence data"),
+          ),
+          conditionalPanel(
+            condition = "input.shortfall2 == 'Distribution'&input.mapopts == 'Bivariate'",
+            helpText("Distribution: shows the scaled, inverse percentage of the 
+                     difference between observed and predicted species richness. 
+                     100 - greatest negative difference, 0 - greatest positive 
+                     difference."),
+          ),conditionalPanel(
+            condition = "input.shortfall2 == 'Coverage'&input.mapopts == 'Bivariate'",
+            helpText("Sampling Incompleteness: shows the inverse of the sample 
+                     coverage (how complete is the total sample of bee species)"),
+          ),conditionalPanel(
+            condition = "input.shortfall2 == 'Photosf'&input.mapopts == 'Bivariate'",
+            helpText("Photos Flickr: shows the count of species without high-quality
+                     in-situ photos on flickr.com"),
+          ),conditionalPanel(
+            condition = "input.shortfall2 == 'Photosi'&input.mapopts == 'Bivariate'",
+            helpText("Photos iNaturalist: shows the count of species without high-quality
+                     in-situ photos on iNaturalist"),
+          ),conditionalPanel(
+            condition = "input.shortfall2 == 'TraitsM'&input.mapopts == 'Bivariate'",
+            helpText("Missing Traits: shows the count of species missing one or 
+                     more of the 6 key traits. B = Body Size (ITD Females), 
+                     V = Voltinism, S = Sociality, N = Nesting, 
+                     F = Feeding specialization (Lecty) & P = Pollen transport"),
+          ),conditionalPanel(
+            condition = "input.shortfall2 == 'TraitsC'&input.mapopts == 'Bivariate'",
+            helpText("Trait Incompleteness: shows the average percentage of 
+                     missing traits of the 6 key traits. B = Body Size (ITD Females), 
+                     V = Voltinism, S = Sociality, N = Nesting, 
+                     F = Feeding specialization (Lecty) & P = Pollen transport"),
+          ),conditionalPanel(
+            condition = "input.shortfall2 == 'Genes'&input.mapopts == 'Bivariate'",
+            helpText("Missing Gene Sequences: shows the count of species missing
+                     COI sequences in online, publicly-available repositories."),
+          ),conditionalPanel(
+            condition = "input.shortfall2 == 'Interactions'&input.mapopts == 'Bivariate'",
+            helpText("Missing Plant Interactions: shows the count of species missing
+                     recorded interactions with plants in online, publicly-available repositories."),
+          ),conditionalPanel(
+            condition = "input.shortfall2 == 'Population'&input.mapopts == 'Bivariate'",
+            helpText("Missing Population Trend: shows the count of species 
+                     without a minimum 3 records for at least 10 separate years 
+                     since 1950."),
+          ),conditionalPanel(
+            condition = "input.shortfall2 == 'Description'&input.mapopts == 'Bivariate'",
+            helpText("Rate of New Descriptions: shows the mean rate of newly 
+                     described species per year in the checklist since 1990"),
+          ),conditionalPanel(
+            condition = "input.shortfall2 == 'Deficient'&input.mapopts == 'Bivariate'",
+            helpText("Data Deficiency: shows the count of species included in the 2014 
+                     European Red List of bees and the 2017 update as\"Data Deficient\"."),
           ),
           radioButtons(
             "mapopts",
@@ -85,7 +203,7 @@ bootstrapPage(
             selectInput(
               "colouropts",
               h3("Select Colour"),
-              choices = c("Colourful", "Mono"),
+              choices = c("Colourful","Mono"),
               selected = "Colourful"
             )
           ),
@@ -119,7 +237,7 @@ bootstrapPage(
             conditionalPanel(
               condition = "input.shortfall == 'TraitsM'",
               helpText(
-                "NB: Trait Codes: B = Body Size (ITD Females), V = Voltinism, S = Sociality, N = Nesting, F = Feeding specialization (Lecty), Z = Buzz pollination & P = Pollen transport"
+                "NB: Trait Codes: B = Body Size (ITD Females), V = Voltinism, S = Sociality, N = Nesting, F = Feeding specialization (Lecty) & P = Pollen transport"
               ),
               
             ),
@@ -132,12 +250,33 @@ bootstrapPage(
     #-----------------------------------------`
     ####------About Tab------####
     tabPanel("About",
-             div(
+             absolutePanel(
                id = "aboutimg",
-               tags$iframe(style='height:2400px; width: 100%;',
-                           src = "AboutPage6UI.pdf")
+               tags$iframe(style="width:100%; scrolling=yes", 
+                           src="AboutPage6UI.pdf")
              )),
     #-----------------------------------------`
+    ####------Contact Tab------####
+    tabPanel(
+      "Contact",
+      pageWithSidebar(
+        headerPanel("Contact"),
+        
+        sidebarPanel(
+          textInput("from", "From:", value = "...@..."),
+          selectInput(
+            "subject",
+            "Subject:",
+            choices = c("Error", "Data", "Other"),
+            selected = "Error"
+          ),
+          actionButton("send", "Send mail")
+        ),
+        
+        mainPanel(aceEditor("message", value = "Hi BeeFall Team,"))
+        
+      )
+    )
   )
 ))
 
@@ -158,9 +297,8 @@ server <- function(input, output, session) {
       updateSelectInput(
         session,
         input = "shortfall",
-        choices = sfs[!sfs %in% list("Checklist", "Description")],
-        selected = if (input$shortfall == "Checklist" |
-                       input$shortfall == "Description") {
+        choices = sfs[!sfs %in% list("Checklist","Description")],
+        selected = if (input$shortfall == "Checklist"|input$shortfall == "Description") {
           "Distribution"
         } else{
           input$shortfall
@@ -196,9 +334,10 @@ server <- function(input, output, session) {
             "Photosf" = np.shp.prov,
             "Photosi" = npi.shp.prov,
             "TraitsM" = nt.shp.prov,
-            "TraitsC" = nt.shp.prov,
+            "TraitsC" = ntc.shp.prov,
             "Genes" = ng.shp.prov,
             "Interactions" = nb.shp.prov,
+            #"Floral" = nbp.shp.prov,
             "Population" = npt.shp.prov,
             "Deficient" =  npd.shp.prov
           )
@@ -209,9 +348,10 @@ server <- function(input, output, session) {
             "Photosf" = np.shp.prov,
             "Photosi" = npi.shp.prov,
             "TraitsM" = nt.shp.prov,
-            "TraitsC" = nt.shp.prov,
+            "TraitsC" = ntc.shp.prov,
             "Genes" = ng.shp.prov,
             "Interactions" = nb.shp.prov,
+            #"Floral" = nbp.shp.prov,
             "Population" = npt.shp.prov,
             "Deficient" =  npd.shp.prov
           )
@@ -227,6 +367,7 @@ server <- function(input, output, session) {
             "TraitsC" = ntc.shp.c,
             "Genes" = ng.shp.c,
             "Interactions" = nb.shp.c,
+            #"Floral" = nbp.shp.c,
             "Population" = npt.shp.c,
             "Description" = nr.shp.c,
             "Deficient" =  npd.shp.c
@@ -249,18 +390,17 @@ server <- function(input, output, session) {
           )
         }
         
-        colselect <- switch(input$colouropts,
-                            "Colourful" = tempcol,
-                            "Mono" = monocol)
+        colselect<- switch(
+          input$colouropts,
+          "Colourful" = tempcol,
+          "Mono" = monocol
+        )
         
-        if ((input$shortfall == "Checklist" |
-             input$shortfall == "Description") &
+        if ((input$shortfall == "Checklist"|input$shortfall == "Description") &
             input$resolution == "Province") {
           NULL
         } else{
-          plotmapfunc(data,
-                      type = req(input$shortfall),
-                      colour = colselect)
+          plotmapfunc(data, type = req(input$shortfall), colour=colselect)
         }
         
       })
@@ -277,9 +417,10 @@ server <- function(input, output, session) {
           "Photosf" = np.shp.prov,
           "Photosi" = npi.shp.prov,
           "TraitsM" = nt.shp.prov,
-          "TraitsC" = nt.shp.prov,
+          "TraitsC" = ntc.shp.prov,
           "Genes" = ng.shp.prov,
           "Interactions" = nb.shp.prov,
+          #"Floral" = nbp.shp.prov,
           "Population" = npt.shp.prov,
           "Deficient" =  npd.shp.prov
         )
@@ -293,6 +434,7 @@ server <- function(input, output, session) {
           "TraitsC" = ntc.shp.prov,
           "Genes" = ng.shp.prov,
           "Interactions" = nb.shp.prov,
+          #"Floral" = nbp.shp.prov,
           "Population" = npt.shp.prov,
           "Deficient" = npd.shp.prov
         )
@@ -308,6 +450,7 @@ server <- function(input, output, session) {
           "TraitsC" = ntc.shp.c,
           "Genes" = ng.shp.c,
           "Interactions" = nb.shp.c,
+          #"Floral" = nbp.shp.c,
           "Population" = npt.shp.c,
           "Description" = nr.shp.c,
           "Deficient" = npd.shp.c
@@ -323,19 +466,18 @@ server <- function(input, output, session) {
           "TraitsC" = ntc.shp.c,
           "Genes" = ng.shp.c,
           "Interactions" = nb.shp.c,
+          #"Floral" = nbp.shp.c,
           "Population" = npt.shp.c,
           "Description" = nr.shp.c,
           "Deficient" = npd.shp.c
         )
       }
       
-      if ((
-        input$shortfall == "Checklist" |
-        input$shortfall2 == "Checklist" |
-        input$shortfall == "Description" |
-        input$shortfall2 == "Description"
-      ) &
-      input$resolution == "Province") {
+      if ((input$shortfall == "Checklist" |
+           input$shortfall2 == "Checklist"|
+           input$shortfall == "Description" |
+           input$shortfall2 == "Description") &
+          input$resolution == "Province") {
         NULL
       } else{
         output$map <- renderLeaflet({
@@ -393,7 +535,7 @@ server <- function(input, output, session) {
     tab.bee <- switch(input$resolution,
                       "Country" = bee.table.c,
                       "Province" = bee.table)
-    DT::datatable(
+   DT::datatable(
       tableee <- if (is.null(click_polygon()))
         NULL    # Not filtered
       else
@@ -405,25 +547,18 @@ server <- function(input, output, session) {
             dplyr::rename(`Species Name` = 1, `Red List Status` = 2)
           
         } else if (input$shortfall == "Photosi" &
+              input$mapopts == "Single Variable") {
+            tab.bee %>% ungroup() %>% filter(iNat == 0 &
+                                               ID == input$map_shape_click$id) %>%
+              dplyr::select(Corrected, "RL_EU_2015") %>% distinct() %>%
+              dplyr::rename(`Species Name` = 1, `Red List Status` = 2)
+          }else if (input$shortfall == "TraitsC" &
                    input$mapopts == "Single Variable") {
-          tab.bee %>% ungroup() %>% filter(iNat == 0 &
-                                             ID == input$map_shape_click$id) %>%
-            dplyr::select(Corrected, "RL_EU_2015") %>% distinct() %>%
-            dplyr::rename(`Species Name` = 1, `Red List Status` = 2)
-        } else if (input$shortfall == "TraitsC" &
-                   input$mapopts == "Single Variable") {
-          tab.bee %>% ungroup() %>% filter(ID == input$map_shape_click$id) %>%
-            dplyr::mutate(perc = apply(across(all_of(traitnames)), 1,
-                                       function(x)
-                                         round((
-                                           sum(is.na(x)) / 7 * 100
-                                         ), 1))) %>%
-            dplyr::select(Corrected, "perc", "RL_EU_2015") %>% distinct() %>%
-            dplyr::rename(
-              `Species Name` = 1,
-              `Percentage Incompleteness` = 2,
-              `Red List Status` = 3
-            )
+            tab.bee %>% ungroup() %>% filter(ID == input$map_shape_click$id) %>% 
+              dplyr::mutate(perc = apply(across(all_of(traitnames)), 1,
+                                  function(x) round((sum(is.na(x))/7*100),1))) %>% 
+              dplyr::select(Corrected, "perc","RL_EU_2015") %>% distinct() %>%
+              dplyr::rename(`Species Name` = 1, `Percentage Incompleteness` = 2, `Red List Status` = 3)
         } else if (input$shortfall == "TraitsM" &
                    input$mapopts == "Single Variable") {
           #first make subset per click of all meaningful traits
@@ -438,8 +573,8 @@ server <- function(input, output, session) {
               Sociality,
               Nesting,
               Lecty,
-              Buzz.pollinator,
-              Pollen.transport
+              #Buzz.pollinator,
+              Mode.of.Pollen.transport
             ) %>% distinct() %>%
             rename_at(vars(all_of(traitnames)), ~ all_of(traitcodes))
           
@@ -462,39 +597,45 @@ server <- function(input, output, session) {
                    input$mapopts == "Single Variable") {
           tab.bee %>% ungroup() %>% filter(PopTrend == 0 &
                                              ID == input$map_shape_click$id) %>%
-            dplyr::select(Corrected, "RL_EU_2015") %>% distinct() %>%
+            dplyr::select(Corrected,"RL_EU_2015") %>% distinct() %>%
             dplyr::rename(`Species Name` = 1, `Red List Status` = 2)
         } else if (input$shortfall == "Deficient" &
                    input$mapopts == "Single Variable") {
           tab.bee %>% ungroup() %>% filter(RL_EU_2015 == "DD" &
                                              ID == input$map_shape_click$id) %>%
-            dplyr::select(Corrected, "RL_EU_2015") %>% distinct() %>%
+            dplyr::select(Corrected,"RL_EU_2015") %>% distinct() %>%
             dplyr::rename(`Species Name` = 1, `Red List Status` = 2)
         } else if (input$shortfall == "Interactions" &
                    input$mapopts == "Single Variable") {
           tab.bee %>% ungroup() %>% filter(Int == 0 &
                                              ID == input$map_shape_click$id) %>%
-            dplyr::select(Corrected, "RL_EU_2015") %>% distinct() %>%
+            dplyr::select(Corrected,"RL_EU_2015") %>% distinct() %>%
             dplyr::rename(`Species Name` = 1, `Red List Status` = 2)
-        }  else if (input$shortfall == "Checklist" &
-               input$mapopts == "Single Variable" &
-               input$resolution == "Country") {
-        species.counts %>% filter(!!rlang::sym(input$map_shape_click$id) > 0) %>%
-          dplyr::select(Corrected, !!rlang::sym(input$map_shape_click$id)) %>%
-          dplyr::rename(`Species Name` = 1,
-                        `Distribution Data` = 2)  %>%
-          dplyr::mutate(`Distribution Data` = recode(`Distribution Data`, "2" = "Yes", "1" = "No"))
-      } else if (input$shortfall == "Description" &
-                 input$mapopts == "Single Variable" &
-                 input$resolution == "Country") {
-        tab.bee %>% ungroup() %>% filter(YOD > 1989 &
-                                           ID == input$map_shape_click$id) %>%
-          dplyr::select(Corrected, "YOD") %>% distinct() %>%
-          dplyr::rename(`Species Name` = 1,
-                        `Year of Description` = 2)
-      },
+        } #else if (input$shortfall == "Floral" &
+        #            input$mapopts == "Single Variable") {
+        #   tab.bee %>% ungroup() %>% filter(is.na(Floral.preference) &
+        #                                      ID == input$map_shape_click$id) %>%
+        #     dplyr::select(Corrected,"RL_EU_2015") %>% distinct() %>%
+        #     dplyr::rename(`Species Name` = 1, `Red List Status` = 2)
+        # } 
+          else if (input$shortfall == "Checklist" &
+                   input$mapopts == "Single Variable"&
+                   input$resolution == "Country") {
+          species.counts %>% filter(!!rlang::sym(input$map_shape_click$id) > 0) %>%
+            dplyr::select(Corrected,!!rlang::sym(input$map_shape_click$id)) %>%
+            dplyr::rename(`Species Name` = 1,
+                   `Distribution Data` = 2)  %>%
+            dplyr::mutate(`Distribution Data` = recode(`Distribution Data`, "2" = "Yes", "1" = "No"))
+        }else if (input$shortfall == "Description" &
+                  input$mapopts == "Single Variable"&
+                  input$resolution == "Country") {
+          tab.bee %>% ungroup() %>% filter(YOD>1989 &
+                                             ID == input$map_shape_click$id) %>%
+            dplyr::select(Corrected, "YOD") %>% distinct() %>%
+            dplyr::rename(`Species Name` = 1, `Year of Description` = 2)
+        },
       
-      
+   
       extensions = "Buttons",
       options = list(
         lengthChange = FALSE,
@@ -505,52 +646,52 @@ server <- function(input, output, session) {
         ),
         dom = "Bfrtip",
         #   #buttons = c("copy", "csv", "excel", "pdf", "print"),
-        buttons = list(
-          list(extend = 'copy'),
-          list(
-            extend = 'csv',
-            filename =  paste(
-              Sys.time(),
-              input$shortfall,
-              input$map_shape_click$id,
-              if (input$resolution == "Province") {
-                na.omit(codes[codes$ID == input$map_shape_click$id, 2])
-              } else{
-                na.omit(unique(codes.c)[unique(codes.c)$FID == input$map_shape_click$id, 2])
-              },
-              sep = "_"
-            )
+          buttons = list(
+            list(extend = 'copy'),
+            list(
+              extend = 'csv',
+              filename =  paste(
+                Sys.time(),
+                input$shortfall,
+                input$map_shape_click$id,
+                if (input$resolution == "Province") {
+                  na.omit(codes[codes$ID == input$map_shape_click$id, 2])
+                } else{
+                  na.omit(unique(codes.c)[unique(codes.c)$FID == input$map_shape_click$id, 2])
+                },
+                sep = "_"
+              )
+            ),
+            list(
+              extend = 'excel',
+              filename =  paste(
+                Sys.time(),
+                input$shortfall,
+                input$map_shape_click$id,
+                if (input$resolution == "Province") {
+                  na.omit(codes[codes$ID == input$map_shape_click$id, 2])
+                } else{
+                  na.omit(unique(codes.c)[unique(codes.c)$FID == input$map_shape_click$id, 2])
+                },
+                sep = "_"
+              )
+            ),
+            list(
+              extend = 'pdf',
+              filename =  paste(
+                Sys.time(),
+                input$shortfall,
+                input$map_shape_click$id,
+                if (input$resolution == "Province") {
+                  na.omit(codes[codes$ID == input$map_shape_click$id, 2])
+                } else{
+                  na.omit(unique(codes.c)[unique(codes.c)$FID == input$map_shape_click$id, 2])
+                },
+                sep = "_"
+              )
+            ),
+            list(extend = 'print')
           ),
-          list(
-            extend = 'excel',
-            filename =  paste(
-              Sys.time(),
-              input$shortfall,
-              input$map_shape_click$id,
-              if (input$resolution == "Province") {
-                na.omit(codes[codes$ID == input$map_shape_click$id, 2])
-              } else{
-                na.omit(unique(codes.c)[unique(codes.c)$FID == input$map_shape_click$id, 2])
-              },
-              sep = "_"
-            )
-          ),
-          list(
-            extend = 'pdf',
-            filename =  paste(
-              Sys.time(),
-              input$shortfall,
-              input$map_shape_click$id,
-              if (input$resolution == "Province") {
-                na.omit(codes[codes$ID == input$map_shape_click$id, 2])
-              } else{
-                na.omit(unique(codes.c)[unique(codes.c)$FID == input$map_shape_click$id, 2])
-              },
-              sep = "_"
-            )
-          ),
-          list(extend = 'print')
-        ),
         autowidth = TRUE,
         columnDefs = list(list(
           width = '70%', targets = 1
@@ -559,9 +700,19 @@ server <- function(input, output, session) {
       ),
       escape = FALSE,
     )
-  }, server = FALSE)  
+  }, server = FALSE)
+  
+  observe({
+    if (is.null(input$send) || input$send == 0)
+      return(NULL)
+    from <- isolate(input$from)
+    to <- "leon.marshall@ulb.be"
+    subject <- isolate(input$subject)
+    msg <- isolate(input$message)
+    sendmail(from, to, subject, msg)
+  })
+  
 } # end of server
-
 
 # Run the application#####
 shinyApp(ui = ui, server = server)
