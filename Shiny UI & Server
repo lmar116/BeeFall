@@ -18,6 +18,7 @@ ui <-  tagList(tags$head(tags$style(
 
 
 bootstrapPage(
+  useShinyjs(),
   navbarPage(
     theme = bslib::bs_theme(bootswatch = "flatly"),
     collapsible = TRUE,
@@ -66,7 +67,7 @@ bootstrapPage(
             "shortfall",
             h3("Shortfall"),
             choices = sfs,
-            selected = "Checklist"
+            selected = "Coverage"
           ),
           conditionalPanel(
             condition = "input.shortfall == 'Checklist'",
@@ -251,38 +252,36 @@ bootstrapPage(
     #-----------------------------------------`
     ####------About Tab------####
     tabPanel("About",
-             absolutePanel(
+             fluidPage(
                id = "aboutimg",
-               tags$iframe(style="width:100%; scrolling=yes", 
-                           src="AboutPage6UI.pdf")
+               tags$iframe(style='height:2400px; width: 100%;',
+                           src = "AboutPage6UI.pdf")
              )),
     #-----------------------------------------`
     ####------Info Tab------####
     tabPanel(
       "Information",
-      pageWithSidebar(
-        headerPanel("Information"),
-        
-        sidebarPanel(
-          textInput("from", "From:", value = "...@..."),
-          selectInput(
-            "subject",
-            "Subject:",
-            choices = c("Error", "Data", "Other"),
-            selected = "Error"
-          ),
-          actionButton("send", "Send mail")
-        ),
-        
-        mainPanel(aceEditor("message", value = "Hi BeeFall Team,"))
-        
-      )
+      basicPage(
+        titlePanel("For full details please see: Marshall et al., 
+                   (2024) Understanding and addressing shortfalls 
+                   in European wild bee data. Biological Conservation.")
+      ),
     )
   )
 ))
 
 #server######
 server <- function(input, output, session) {
+  
+  shinyjs::delay(
+    1,  # 30 seconds in milliseconds
+    shinyjs::toggle(id = "controls", anim = TRUE)  # Show the container
+  )
+  
+  shinyjs::delay(
+    10000,  # 30 seconds in milliseconds
+    shinyjs::toggle(id = "controls", anim = TRUE)  # Show the container
+  )
   
   toListen <- reactive({
     list(input$shortfall, input$resolution)
