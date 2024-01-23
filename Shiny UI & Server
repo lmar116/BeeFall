@@ -18,7 +18,6 @@ ui <-  tagList(tags$head(tags$style(
 
 
 bootstrapPage(
-  useShinyjs(),
   navbarPage(
     theme = bslib::bs_theme(bootswatch = "flatly"),
     collapsible = TRUE,
@@ -235,6 +234,10 @@ bootstrapPage(
               status = 'primary',
               dataTableOutput('table')
             ),
+            helpText(
+              "* indicates a species with recent taxonomical changes which may have some 
+              discrepancies in historical distribution data"
+            ),
             #show selected data in table form
             conditionalPanel(
               condition = "input.shortfall == 'TraitsM'",
@@ -252,7 +255,7 @@ bootstrapPage(
     #-----------------------------------------`
     ####------About Tab------####
     tabPanel("About",
-             fluidPage(
+            fluidPage(
                id = "aboutimg",
                tags$iframe(style='height:2400px; width: 100%;',
                            src = "AboutPage6UI.pdf")
@@ -272,16 +275,6 @@ bootstrapPage(
 
 #server######
 server <- function(input, output, session) {
-  
-  shinyjs::delay(
-    1,  # 30 seconds in milliseconds
-    shinyjs::toggle(id = "controls", anim = TRUE)  # Show the container
-  )
-  
-  shinyjs::delay(
-    10000,  # 30 seconds in milliseconds
-    shinyjs::toggle(id = "controls", anim = TRUE)  # Show the container
-  )
   
   toListen <- reactive({
     list(input$shortfall, input$resolution)
@@ -528,7 +521,8 @@ server <- function(input, output, session) {
     tab.bee <- switch(input$resolution,
                       "Country" = bee.table.c,
                       "Province" = bee.table)
-   DT::datatable(
+    
+    DT::datatable(
       tableee <- if (is.null(click_polygon()))
         NULL    # Not filtered
       else
@@ -536,22 +530,34 @@ server <- function(input, output, session) {
             input$mapopts == "Single Variable") {
           tab.bee %>% ungroup() %>% filter(Photo == 0 &
                                              ID == input$map_shape_click$id) %>%
-            dplyr::select(Corrected, "RL_EU_2015") %>% distinct() %>%
-            dplyr::rename(`Species Name` = 1, `Red List Status` = 2)
+            dplyr::select(Corrected, "RL_EU_2015", ".") %>% distinct() %>%
+            dplyr::rename(`Species Name` = 1,
+                          `Red List Status` = 2,
+                          `*` = 3)
           
         } else if (input$shortfall == "Photosi" &
-              input$mapopts == "Single Variable") {
-            tab.bee %>% ungroup() %>% filter(iNat == 0 &
-                                               ID == input$map_shape_click$id) %>%
-              dplyr::select(Corrected, "RL_EU_2015") %>% distinct() %>%
-              dplyr::rename(`Species Name` = 1, `Red List Status` = 2)
-          }else if (input$shortfall == "TraitsC" &
                    input$mapopts == "Single Variable") {
-            tab.bee %>% ungroup() %>% filter(ID == input$map_shape_click$id) %>% 
-              dplyr::mutate(perc = apply(across(all_of(traitnames)), 1,
-                                  function(x) round((sum(is.na(x))/7*100),1))) %>% 
-              dplyr::select(Corrected, "perc","RL_EU_2015") %>% distinct() %>%
-              dplyr::rename(`Species Name` = 1, `Percentage Incompleteness` = 2, `Red List Status` = 3)
+          tab.bee %>% ungroup() %>% filter(iNat == 0 &
+                                             ID == input$map_shape_click$id) %>%
+            dplyr::select(Corrected, "RL_EU_2015", ".") %>% distinct() %>%
+            dplyr::rename(`Species Name` = 1,
+                          `Red List Status` = 2,
+                          `*` = 3)
+        } else if (input$shortfall == "TraitsC" &
+                   input$mapopts == "Single Variable") {
+          tab.bee %>% ungroup() %>% filter(ID == input$map_shape_click$id) %>%
+            dplyr::mutate(perc = apply(across(all_of(traitnames)), 1,
+                                       function(x)
+                                         round((
+                                           sum(is.na(x)) / 7 * 100
+                                         ), 1))) %>%
+            dplyr::select(Corrected, "perc", "RL_EU_2015", ".") %>% distinct() %>%
+            dplyr::rename(
+              `Species Name` = 1,
+              `Percentage Incompleteness` = 2,
+              `Red List Status` = 3,
+              `*` = 4
+            )
         } else if (input$shortfall == "TraitsM" &
                    input$mapopts == "Single Variable") {
           #first make subset per click of all meaningful traits
@@ -574,61 +580,64 @@ server <- function(input, output, session) {
           #create table where we addnewcolumn showing which traits are missing
           cbind(test1, MT = apply(test1 %>% dplyr::select(all_of(traitcodes)), 1,
                                   function(u)
-                                    paste(names(u)[sapply(u, anyNA)], collapse = ","))) %>% dplyr::select(Corrected, RL_EU_2015, MT) %>% distinct() %>%
+                                    paste(names(u)[sapply(u, anyNA)], collapse = ","))) %>% 
+            dplyr::select(Corrected, RL_EU_2015, MT, .) %>% distinct() %>%
             dplyr::rename(
               `Species Name` = 1,
               `Red List Status` = 2,
-              `Missing Traits` = 3
+              `Missing Traits` = 3,
+              `*` = 4
             )
         } else if (input$shortfall == "Genes" &
                    input$mapopts == "Single Variable") {
           tab.bee %>% ungroup() %>% filter(Gene == 0 &
                                              ID == input$map_shape_click$id) %>%
-            dplyr::select(Corrected, "RL_EU_2015") %>% distinct() %>%
-            dplyr::rename(`Species Name` = 1, `Red List Status` = 2)
+            dplyr::select(Corrected, "RL_EU_2015", ".") %>% distinct() %>%
+            dplyr::rename(`Species Name` = 1, `Red List Status` = 2,`*` = 3)
         } else if (input$shortfall == "Population" &
                    input$mapopts == "Single Variable") {
           tab.bee %>% ungroup() %>% filter(PopTrend == 0 &
                                              ID == input$map_shape_click$id) %>%
-            dplyr::select(Corrected,"RL_EU_2015") %>% distinct() %>%
-            dplyr::rename(`Species Name` = 1, `Red List Status` = 2)
+            dplyr::select(Corrected, "RL_EU_2015",".") %>% distinct() %>%
+            dplyr::rename(`Species Name` = 1, `Red List Status` = 2,`*` = 3)
         } else if (input$shortfall == "Deficient" &
                    input$mapopts == "Single Variable") {
           tab.bee %>% ungroup() %>% filter(RL_EU_2015 == "DD" &
                                              ID == input$map_shape_click$id) %>%
-            dplyr::select(Corrected,"RL_EU_2015") %>% distinct() %>%
-            dplyr::rename(`Species Name` = 1, `Red List Status` = 2)
+            dplyr::select(Corrected, "RL_EU_2015") %>% distinct() %>%
+            dplyr::rename(`Species Name` = 1, `Red List Status` = 2,`*` = 3)
         } else if (input$shortfall == "Interactions" &
                    input$mapopts == "Single Variable") {
           tab.bee %>% ungroup() %>% filter(Int == 0 &
                                              ID == input$map_shape_click$id) %>%
-            dplyr::select(Corrected,"RL_EU_2015") %>% distinct() %>%
-            dplyr::rename(`Species Name` = 1, `Red List Status` = 2)
+            dplyr::select(Corrected, "RL_EU_2015",".") %>% distinct() %>%
+            dplyr::rename(`Species Name` = 1, `Red List Status` = 2,`*` = 3)
         } #else if (input$shortfall == "Floral" &
-        #            input$mapopts == "Single Variable") {
-        #   tab.bee %>% ungroup() %>% filter(is.na(Floral.preference) &
-        #                                      ID == input$map_shape_click$id) %>%
-        #     dplyr::select(Corrected,"RL_EU_2015") %>% distinct() %>%
-        #     dplyr::rename(`Species Name` = 1, `Red List Status` = 2)
-        # } 
-          else if (input$shortfall == "Checklist" &
-                   input$mapopts == "Single Variable"&
-                   input$resolution == "Country") {
-          species.counts %>% filter(!!rlang::sym(input$map_shape_click$id) > 0) %>%
-            dplyr::select(Corrected,!!rlang::sym(input$map_shape_click$id)) %>%
-            dplyr::rename(`Species Name` = 1,
-                   `Distribution Data` = 2)  %>%
-            dplyr::mutate(`Distribution Data` = recode(`Distribution Data`, "2" = "Yes", "1" = "No"))
-        }else if (input$shortfall == "Description" &
-                  input$mapopts == "Single Variable"&
-                  input$resolution == "Country") {
-          tab.bee %>% ungroup() %>% filter(YOD>1989 &
-                                             ID == input$map_shape_click$id) %>%
-            dplyr::select(Corrected, "YOD") %>% distinct() %>%
-            dplyr::rename(`Species Name` = 1, `Year of Description` = 2)
-        },
+      #            input$mapopts == "Single Variable") {
+      #   tab.bee %>% ungroup() %>% filter(is.na(Floral.preference) &
+      #                                      ID == input$map_shape_click$id) %>%
+      #     dplyr::select(Corrected,"RL_EU_2015") %>% distinct() %>%
+      #     dplyr::rename(`Species Name` = 1, `Red List Status` = 2)
+      # }
+      else if (input$shortfall == "Checklist" &
+               input$mapopts == "Single Variable" &
+               input$resolution == "Country") {
+        species.counts %>% filter(!!rlang::sym(input$map_shape_click$id) > 0) %>%
+          dplyr::select(Corrected, !!rlang::sym(input$map_shape_click$id),".") %>%
+          dplyr::rename(`Species Name` = 1,
+                        `Distribution Data` = 2,
+                        `*` = 3)  %>%
+          dplyr::mutate(`Distribution Data` = recode(`Distribution Data`, "2" = "Yes", "1" = "No"))
+      } else if (input$shortfall == "Description" &
+                 input$mapopts == "Single Variable" &
+                 input$resolution == "Country") {
+        tab.bee %>% ungroup() %>% filter(YOD > 1989 &
+                                           ID == input$map_shape_click$id) %>%
+          dplyr::select(Corrected, "YOD",".") %>% distinct() %>%
+          dplyr::rename(`Species Name` = 1, `Year of Description` = 2,`*` = 3)
+      },
       
-   
+      
       extensions = "Buttons",
       options = list(
         lengthChange = FALSE,
@@ -639,52 +648,52 @@ server <- function(input, output, session) {
         ),
         dom = "Bfrtip",
         #   #buttons = c("copy", "csv", "excel", "pdf", "print"),
-          buttons = list(
-            list(extend = 'copy'),
-            list(
-              extend = 'csv',
-              filename =  paste(
-                Sys.time(),
-                input$shortfall,
-                input$map_shape_click$id,
-                if (input$resolution == "Province") {
-                  na.omit(codes[codes$ID == input$map_shape_click$id, 2])
-                } else{
-                  na.omit(unique(codes.c)[unique(codes.c)$FID == input$map_shape_click$id, 2])
-                },
-                sep = "_"
-              )
-            ),
-            list(
-              extend = 'excel',
-              filename =  paste(
-                Sys.time(),
-                input$shortfall,
-                input$map_shape_click$id,
-                if (input$resolution == "Province") {
-                  na.omit(codes[codes$ID == input$map_shape_click$id, 2])
-                } else{
-                  na.omit(unique(codes.c)[unique(codes.c)$FID == input$map_shape_click$id, 2])
-                },
-                sep = "_"
-              )
-            ),
-            list(
-              extend = 'pdf',
-              filename =  paste(
-                Sys.time(),
-                input$shortfall,
-                input$map_shape_click$id,
-                if (input$resolution == "Province") {
-                  na.omit(codes[codes$ID == input$map_shape_click$id, 2])
-                } else{
-                  na.omit(unique(codes.c)[unique(codes.c)$FID == input$map_shape_click$id, 2])
-                },
-                sep = "_"
-              )
-            ),
-            list(extend = 'print')
+        buttons = list(
+          list(extend = 'copy'),
+          list(
+            extend = 'csv',
+            filename =  paste(
+              Sys.time(),
+              input$shortfall,
+              input$map_shape_click$id,
+              if (input$resolution == "Province") {
+                na.omit(codes[codes$ID == input$map_shape_click$id, 2])
+              } else{
+                na.omit(unique(codes.c)[unique(codes.c)$FID == input$map_shape_click$id, 2])
+              },
+              sep = "_"
+            )
           ),
+          list(
+            extend = 'excel',
+            filename =  paste(
+              Sys.time(),
+              input$shortfall,
+              input$map_shape_click$id,
+              if (input$resolution == "Province") {
+                na.omit(codes[codes$ID == input$map_shape_click$id, 2])
+              } else{
+                na.omit(unique(codes.c)[unique(codes.c)$FID == input$map_shape_click$id, 2])
+              },
+              sep = "_"
+            )
+          ),
+          list(
+            extend = 'pdf',
+            filename =  paste(
+              Sys.time(),
+              input$shortfall,
+              input$map_shape_click$id,
+              if (input$resolution == "Province") {
+                na.omit(codes[codes$ID == input$map_shape_click$id, 2])
+              } else{
+                na.omit(unique(codes.c)[unique(codes.c)$FID == input$map_shape_click$id, 2])
+              },
+              sep = "_"
+            )
+          ),
+          list(extend = 'print')
+        ),
         autowidth = TRUE,
         columnDefs = list(list(
           width = '70%', targets = 1
