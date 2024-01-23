@@ -539,7 +539,7 @@ server <- function(input, output, session) {
                    input$mapopts == "Single Variable") {
           tab.bee %>% ungroup() %>% filter(iNat == 0 &
                                              ID == input$map_shape_click$id) %>%
-            dplyr::select(Corrected, "RL_EU_2015", ".") %>% distinct() %>%
+            dplyr::select("Corrected", "RL_EU_2015", ".") %>% distinct() %>%
             dplyr::rename(`Species Name` = 1,
                           `Red List Status` = 2,
                           `*` = 3)
@@ -551,10 +551,10 @@ server <- function(input, output, session) {
                                          round((
                                            sum(is.na(x)) / 7 * 100
                                          ), 1))) %>%
-            dplyr::select(Corrected, "perc", "RL_EU_2015", ".") %>% distinct() %>%
+            dplyr::select("Corrected", "perc", "RL_EU_2015", ".") %>% distinct() %>%
             dplyr::rename(
               `Species Name` = 1,
-              `Percentage Incompleteness` = 2,
+              `% Incomplete` = 2,
               `Red List Status` = 3,
               `*` = 4
             )
@@ -581,7 +581,7 @@ server <- function(input, output, session) {
           cbind(test1, MT = apply(test1 %>% dplyr::select(all_of(traitcodes)), 1,
                                   function(u)
                                     paste(names(u)[sapply(u, anyNA)], collapse = ","))) %>% 
-            dplyr::select(Corrected, RL_EU_2015, MT, .) %>% distinct() %>%
+            dplyr::select("Corrected", "RL_EU_2015", "MT", ".") %>% distinct() %>%
             dplyr::rename(
               `Species Name` = 1,
               `Red List Status` = 2,
@@ -598,7 +598,7 @@ server <- function(input, output, session) {
                    input$mapopts == "Single Variable") {
           tab.bee %>% ungroup() %>% filter(PopTrend == 0 &
                                              ID == input$map_shape_click$id) %>%
-            dplyr::select(Corrected, "RL_EU_2015",".") %>% distinct() %>%
+            dplyr::select("Corrected", "RL_EU_2015",".") %>% distinct() %>%
             dplyr::rename(`Species Name` = 1, `Red List Status` = 2,`*` = 3)
         } else if (input$shortfall == "Deficient" &
                    input$mapopts == "Single Variable") {
@@ -610,7 +610,7 @@ server <- function(input, output, session) {
                    input$mapopts == "Single Variable") {
           tab.bee %>% ungroup() %>% filter(Int == 0 &
                                              ID == input$map_shape_click$id) %>%
-            dplyr::select(Corrected, "RL_EU_2015",".") %>% distinct() %>%
+            dplyr::select("Corrected", "RL_EU_2015",".") %>% distinct() %>%
             dplyr::rename(`Species Name` = 1, `Red List Status` = 2,`*` = 3)
         } #else if (input$shortfall == "Floral" &
       #            input$mapopts == "Single Variable") {
@@ -623,7 +623,7 @@ server <- function(input, output, session) {
                input$mapopts == "Single Variable" &
                input$resolution == "Country") {
         species.counts %>% filter(!!rlang::sym(input$map_shape_click$id) > 0) %>%
-          dplyr::select(Corrected, !!rlang::sym(input$map_shape_click$id),".") %>%
+          dplyr::select("Corrected", !!rlang::sym(input$map_shape_click$id),".") %>%
           dplyr::rename(`Species Name` = 1,
                         `Distribution Data` = 2,
                         `*` = 3)  %>%
@@ -633,10 +633,9 @@ server <- function(input, output, session) {
                  input$resolution == "Country") {
         tab.bee %>% ungroup() %>% filter(YOD > 1989 &
                                            ID == input$map_shape_click$id) %>%
-          dplyr::select(Corrected, "YOD",".") %>% distinct() %>%
+          dplyr::select("Corrected", "YOD",".") %>% distinct() %>%
           dplyr::rename(`Species Name` = 1, `Year of Description` = 2,`*` = 3)
       },
-      
       
       extensions = "Buttons",
       options = list(
@@ -705,6 +704,7 @@ server <- function(input, output, session) {
   }, server = FALSE)
   
 } # end of server
+
 
 # Run the application#####
 shinyApp(ui = ui, server = server)
