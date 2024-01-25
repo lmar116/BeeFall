@@ -1,7 +1,7 @@
 # BeeFall Online 
 ## Understanding and addressing shortfalls in European wild bee data
 
-https://authors.elsevier.com/a/1iUVh1R%7EeWZse
+Article link: https://authors.elsevier.com/a/1iUVh1R%7EeWZse
 
 Leon Marshall<sup>1,2^*</sup>
 Nicolas Leclercq<sup>1^</sup>
