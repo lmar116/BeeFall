@@ -564,7 +564,8 @@ server <- function(input, output, session) {
               Nesting,
               Lecty,
               #Buzz.pollinator,
-              Mode.of.Pollen.transport
+              Mode.of.Pollen.transport,
+              "."
             ) %>% distinct() %>%
             rename_at(vars(all_of(traitnames)), ~ all_of(traitcodes))
           
