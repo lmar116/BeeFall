@@ -1,7 +1,7 @@
 
-# BeeFall Online ![BeeFallLogo2024](https://github.com/lmar116/BeeFall/assets/33490288/93173808-0896-45cf-b7e7-afa9cdc0ef4a)
+# BeeFall Online ![BeeFallLogo2024](h)
 ## Understanding and addressing shortfalls in European wild bee data
-<img src="[https://github.com/lmar116/BeeFall/assets/33490288/93173808-0896-45cf-b7e7-afa9cdc0ef4a]" width="100" height="100">
+<img src="https://github.com/lmar116/BeeFall/assets/33490288/93173808-0896-45cf-b7e7-afa9cdc0ef4a" width="100" height="100">
 Article link: https://authors.elsevier.com/a/1iUVh1R%7EeWZse
 
 Leon Marshall<sup>1,2^*</sup>
