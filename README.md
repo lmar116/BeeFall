@@ -1,6 +1,5 @@
 
-<img src="![BeeFallLogo2024](https://github.com/lmar116/BeeFall/assets/33490288/93173808-0896-45cf-b7e7-afa9cdc0ef4a)" alt="drawing" width="200"/> 
-# BeeFall Online 
+# BeeFall Online ![BeeFallLogo2024](https://github.com/lmar116/BeeFall/assets/33490288/93173808-0896-45cf-b7e7-afa9cdc0ef4a)
 ## Understanding and addressing shortfalls in European wild bee data
 
 Article link: https://authors.elsevier.com/a/1iUVh1R%7EeWZse
