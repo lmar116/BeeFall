@@ -40,7 +40,7 @@ Understanding and reversing biodiversity decline in the Anthropocene requires ro
 - Plotting Functions: R plotting functions needed to run BeeFall shiny tool
 - Data folder: All raw data needed to run BeeFall shiny tool see FullMetadata_BeeFallV0.9.1.html for all necessary information.
 
-![image](https://github.com/lmar116/BeeFall/assets/33490288/dc6055af-e8be-4fae-a7cb-d5207c8de95b)
+![image](https://github.com/lmar116/BeeFall/assets/33490288/8e056b38-ea54-4e7d-87c6-5a27d8444072)
 
 ![image](https://github.com/lmar116/BeeFall/assets/33490288/65c3a434-82bc-44d7-b35a-ea1c4d4b6aa4)
 
