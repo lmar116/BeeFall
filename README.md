@@ -42,4 +42,5 @@ Understanding and reversing biodiversity decline in the Anthropocene requires ro
 
 ![image](https://github.com/lmar116/BeeFall/assets/33490288/dc6055af-e8be-4fae-a7cb-d5207c8de95b)
 
-![image](https://github.com/lmar116/BeeFall/assets/33490288/cbd71f9c-87cb-4be8-96f3-257e608bdc0a)
+![image](https://github.com/lmar116/BeeFall/assets/33490288/65c3a434-82bc-44d7-b35a-ea1c4d4b6aa4)
+
