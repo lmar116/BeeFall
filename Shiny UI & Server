@@ -51,7 +51,7 @@ bootstrapPage(
           draggable = F,
           height = "auto",
           
-          img(src = "logov3.png", height = 140),
+          img(src = "BeeFallLogo2024.png", height = 140),
           
           helpText("Visualize data shortfalls and impediments for European wild bee species"),
           
@@ -258,7 +258,7 @@ bootstrapPage(
             fluidPage(
                id = "aboutimg",
                tags$iframe(style='height:2400px; width: 100%;',
-                           src = "AboutPage7UI.pdf")
+                           src = "AboutPage8UI.pdf")
              )),
     #-----------------------------------------`
   )
