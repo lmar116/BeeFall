@@ -1,6 +1,7 @@
 
-# BeeFall Online 
-## Understanding and addressing shortfalls in European wild bee data <img align="right" src="https://github.com/lmar116/BeeFall/assets/33490288/93173808-0896-45cf-b7e7-afa9cdc0ef4a" width="150" height="150">
+# BeeFall Online <img align="right" src="https://github.com/lmar116/BeeFall/assets/33490288/93173808-0896-45cf-b7e7-afa9cdc0ef4a" width="200" height="200">
+
+## Understanding and addressing shortfalls in European wild bee data
 
 Article link: https://authors.elsevier.com/a/1iUVh1R%7EeWZse
 
