@@ -3,7 +3,7 @@
 
 ## Understanding and addressing shortfalls in European wild bee data
 
-Article link: https://authors.elsevier.com/a/1iUVh1R%7EeWZse
+[###Published Article](https://www.sciencedirect.com/science/article/pii/S0006320724000168 "Understanding and addressing shortfalls in European wild bee data")
 
 Leon Marshall<sup>1,2^*</sup>
 Nicolas Leclercq<sup>1^</sup>
