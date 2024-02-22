@@ -29,12 +29,12 @@ Nicolas J. Vereecken<sup>1</sup>
 8. Centre for Agri-Environmental Research, School of Agriculture, Policy and Development, University of Reading, Reading, RG6 6AR, UK
 9. Laboratory of Zoology, Université de Mons, B-7000 Mons, Belgium
 
-![image](https://github.com/lmar116/BeeFall/assets/33490288/bfc468b7-f6be-4b44-ae63-a97e13cf5b3e)
+![Figure1](https://github.com/lmar116/BeeFall/assets/33490288/62580a4a-72b1-43b6-ac14-0b172ec4387b)
 
 ### Abstract
 Understanding and reversing biodiversity decline in the Anthropocene requires robust data on species taxonomic identity, distribution, ecology, and population trends. Data deficits hinder biodiversity assessments and conservation, and despite major advances over the past few decades, our understanding of bee diversity, decline and distribution in Europe is still hampered by such data shortfalls. Using a unique digital dataset of wild bee occurrence and ecology, we identify seven critical shortfalls which are an absence of knowledge on geographic distributions, (functional) trait variation, population dynamics, evolutionary relationships, biotic interactions, species identity, and tolerance to abiotic conditions. We describe “BeeFall,” an interactive online Shiny app tool, which visualizes these shortfalls and highlights missing data. We also define a new impediment, the Keartonian Impediment, which addresses an absence of high-quality in situ photos and illustrations with diagnostic characteristics and directly affects the outlined shortfalls. Shortfalls are highly correlated at both the provincial and national scales, identifying key areas in Europe where knowledge gaps can be filled. This work provides an important first step towards the long-term goal to mobilize and aggregate European wild bee data into a multi-scale, easy access, shareable, and updatable database which can inform research, practice and policy actions for the conservation of wild bees.
 
-![image](https://github.com/lmar116/BeeFall/assets/33490288/95eebfa8-47b0-4557-b525-8f00e6b621e2)
+![image](https://github.com/lmar116/BeeFall/assets/33490288/bfc468b7-f6be-4b44-ae63-a97e13cf5b3e)
 
 ### Data and Code
 - shiny.RData: RData file with all data needed to run BeeFall shiny tool
