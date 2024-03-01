@@ -1,7 +1,7 @@
 
 # BeeFall Online <img align="right" src="https://github.com/lmar116/BeeFall/assets/33490288/2502a4a0-d6c6-4828-b97f-a0b32513cac1" width="200">
 
-## Understanding and addressing shortfalls in European wild bee data
+## Understanding and addressing shortfalls in European wild bee data <img align="right">
 [Published Article](https://www.sciencedirect.com/science/article/pii/S0006320724000168 "Understanding and addressing shortfalls in European wild bee data")
 
 Leon Marshall<sup>1,2^*</sup>
