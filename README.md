@@ -1,5 +1,5 @@
 
-# BeeFall Online <img align="right" src="https://github.com/lmar116/BeeFall/assets/33490288/93173808-0896-45cf-b7e7-afa9cdc0ef4a" width="200" height="200">
+# BeeFall Online <img align="right" src="https://github.com/lmar116/BeeFall/assets/33490288/2502a4a0-d6c6-4828-b97f-a0b32513cac1" width="200" height="200">
 
 ## Understanding and addressing shortfalls in European wild bee data
 
